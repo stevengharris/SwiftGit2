@@ -116,6 +116,20 @@
 			remoteGlobalIDString = 621E66E71C729EB800A0F352;
 			remoteInfo = "OpenSSL-iOS";
 		};
+		AA7F2DCB24FED5E6008447AD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BEB31F1A1A0D6F7A00F525B9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA7F2DBD24FDC189008447AD;
+			remoteInfo = "OpenSSL_111-iOS";
+		};
+		AAFE9E172500621E00C82C25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BEB31F1A1A0D6F7A00F525B9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA7F2DC324FED49E008447AD;
+			remoteInfo = "libssh2_190-iOS";
+		};
 		BEB31F301A0D6F7A00F525B9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BEB31F1A1A0D6F7A00F525B9 /* Project object */;
@@ -145,6 +159,9 @@
 		621E66FF1C72A60B00A0F352 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		622726331C84E52500C53D17 /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		62E6FD8E1C727E9C00A312B0 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = ../Carthage/Checkouts/ZipArchive/build/Debug/ZipArchive.framework; sourceTree = "<group>"; };
+		AA7F2DC224FDC189008447AD /* libOpenSSL_111-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libOpenSSL_111-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA7F2DCA24FED49E008447AD /* liblibssh2_190-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibssh2_190-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAFE9E16250061E400C82C25 /* liblibgit2_101-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibgit2_101-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE0991F61A578FB1007D4E6A /* Mantle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Mantle.zip; sourceTree = "<group>"; };
 		BE0B1C5C1A9978890004726D /* detached-head.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "detached-head.zip"; sourceTree = "<group>"; };
 		BE14AA4F1A1974010015B439 /* SwiftGit2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftGit2.m; sourceTree = "<group>"; };
@@ -294,6 +311,9 @@
 				621E66E11C729CE500A0F352 /* libgit2.a */,
 				621E66EC1C729EB800A0F352 /* libssl.a */,
 				621E66F21C729EBB00A0F352 /* libssh2.a */,
+				AA7F2DC224FDC189008447AD /* libOpenSSL_111-iOS.a */,
+				AA7F2DCA24FED49E008447AD /* liblibssh2_190-iOS.a */,
+				AAFE9E16250061E400C82C25 /* liblibgit2_101-iOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -535,6 +555,53 @@
 			productReference = 621E66F21C729EBB00A0F352 /* libssh2.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		AA7F2DBD24FDC189008447AD /* OpenSSL_111-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA7F2DBF24FDC189008447AD /* Build configuration list for PBXNativeTarget "OpenSSL_111-iOS" */;
+			buildPhases = (
+				AA7F2DBE24FDC189008447AD /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "OpenSSL_111-iOS";
+			productName = libgit2;
+			productReference = AA7F2DC224FDC189008447AD /* libOpenSSL_111-iOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		AA7F2DC324FED49E008447AD /* libssh2_190-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA7F2DC724FED49E008447AD /* Build configuration list for PBXNativeTarget "libssh2_190-iOS" */;
+			buildPhases = (
+				AA7F2DC624FED49E008447AD /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA7F2DCC24FED5E6008447AD /* PBXTargetDependency */,
+			);
+			name = "libssh2_190-iOS";
+			productName = libgit2;
+			productReference = AA7F2DCA24FED49E008447AD /* liblibssh2_190-iOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAFE9E13250061E400C82C25 /* Build configuration list for PBXNativeTarget "libgit2_101-iOS" */;
+			buildPhases = (
+				AAFE9E12250061E400C82C25 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AAFE9E182500621E00C82C25 /* PBXTargetDependency */,
+			);
+			name = "libgit2_101-iOS";
+			productName = libgit2;
+			productReference = AAFE9E16250061E400C82C25 /* liblibgit2_101-iOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		BEB31F221A0D6F7A00F525B9 /* SwiftGit2-OSX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BEB31F391A0D6F7A00F525B9 /* Build configuration list for PBXNativeTarget "SwiftGit2-OSX" */;
@@ -641,6 +708,9 @@
 				621E66E71C729EB800A0F352 /* OpenSSL-iOS */,
 				621E66ED1C729EBB00A0F352 /* libssh2-iOS */,
 				C9CE0DD21E0710BD0053205D /* SwiftLint */,
+				AA7F2DBD24FDC189008447AD /* OpenSSL_111-iOS */,
+				AA7F2DC324FED49E008447AD /* libssh2_190-iOS */,
+				AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -695,7 +765,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = script/update_libssl_ios;
+			shellScript = "script/update_libssl_ios\n";
 		};
 		621E66EE1C729EBB00A0F352 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -708,7 +778,46 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = script/update_libssh2_ios;
+			shellScript = "script/update_libssh2_ios\n";
+		};
+		AA7F2DBE24FDC189008447AD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script/update_libssl_111_ios\n";
+		};
+		AA7F2DC624FED49E008447AD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script/update_libssh2_190_ios\n";
+		};
+		AAFE9E12250061E400C82C25 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script/update_libgit2_101_ios\n";
 		};
 		BEB31F931A0E567000F525B9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -832,6 +941,16 @@
 			isa = PBXTargetDependency;
 			target = 621E66E71C729EB800A0F352 /* OpenSSL-iOS */;
 			targetProxy = 624349891C7CADD90087C234 /* PBXContainerItemProxy */;
+		};
+		AA7F2DCC24FED5E6008447AD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA7F2DBD24FDC189008447AD /* OpenSSL_111-iOS */;
+			targetProxy = AA7F2DCB24FED5E6008447AD /* PBXContainerItemProxy */;
+		};
+		AAFE9E182500621E00C82C25 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA7F2DC324FED49E008447AD /* libssh2_190-iOS */;
+			targetProxy = AAFE9E172500621E00C82C25 /* PBXContainerItemProxy */;
 		};
 		BEB31F311A0D6F7A00F525B9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -969,6 +1088,54 @@
 			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = ssh2;
+			};
+			name = Release;
+		};
+		AA7F2DC024FDC189008447AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AA7F2DC124FDC189008447AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		AA7F2DC824FED49E008447AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AA7F2DC924FED49E008447AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		AAFE9E14250061E400C82C25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		AAFE9E15250061E400C82C25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -1153,6 +1320,33 @@
 			buildConfigurations = (
 				621E66F01C729EBB00A0F352 /* Debug */,
 				621E66F11C729EBB00A0F352 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA7F2DBF24FDC189008447AD /* Build configuration list for PBXNativeTarget "OpenSSL_111-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA7F2DC024FDC189008447AD /* Debug */,
+				AA7F2DC124FDC189008447AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA7F2DC724FED49E008447AD /* Build configuration list for PBXNativeTarget "libssh2_190-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA7F2DC824FED49E008447AD /* Debug */,
+				AA7F2DC924FED49E008447AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAFE9E13250061E400C82C25 /* Build configuration list for PBXNativeTarget "libgit2_101-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAFE9E14250061E400C82C25 /* Debug */,
+				AAFE9E15250061E400C82C25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

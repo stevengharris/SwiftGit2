@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# Build openssl 1.1.1d
+# Place results in openssl-1.1.1-ios
+
+SCRIPT_DIR=$(dirname "$0")
+
+function setup_build_environment()
+{
+    # Define ROOT_PATH as is done in setup_build_environment in ios_build_functions
+    pushd "$SCRIPT_DIR/.." > /dev/null
+    ROOT_PATH="$PWD"
+    popd > /dev/null
+}
+
+function setup_build()
+{
+    if [ "$1" != "clean" ]
+    then
+        # Here we check openssl-1.1.1-ios for the fat binary to see if we need to rebuild it
+        if [ -f "${ROOT_PATH}/External/openssl-1.1.1-ios/lib/libssl.a" ] && [ -f "${ROOT_PATH}/External/openssl-1.1.1-ios/lib/libcrypto.a" ] && [ -d "${ROOT_PATH}/External/openssl-1.1.1-ios/include" ]
+        then
+            echo "No update needed."
+            exit 0
+        fi
+    fi
+    
+    LIBRARY_NAME="OpenSSL"
+    rm -rf "${ROOT_PATH}/External/openssl-1.1.1-ios/include" "External/openssl-1.1.1-ios/lib"
+}
+
+function build()
+{
+    # Build openssl1.1.1d using the default archs for iOS
+    # The script from the OpenSSL-for-iPhone project builds for all iOS archs
+    # but not for Mac Catalyst
+
+    pushd "${ROOT_PATH}/External/OpenSSL-for-iPhone" > /dev/null
+    ./build-libssl.sh --targets="ios-sim-cross-x86_64 ios64-cross-arm64" --cleanup
+    popd > /dev/null
+}
+
+function fat_binary() 
+{
+    # The build-libssl.sh script created the fat binary, so here we just copy things to the ios-openssl directory
+    echo "Copying files to ${ROOT_PATH}/External/openssl-1.1.1-ios/"
+    mkdir -p "${ROOT_PATH}/External/openssl-1.1.1-ios/include"
+    cp -r "${ROOT_PATH}/External/OpenSSL-for-iPhone/include/openssl" "${ROOT_PATH}/External/openssl-1.1.1-ios/include/"
+
+    mkdir -p "${ROOT_PATH}/External/openssl-1.1.1-ios/lib"
+    cp "${ROOT_PATH}/External/OpenSSL-for-iPhone/lib/libssl.a" "${ROOT_PATH}/External/openssl-1.1.1-ios/lib/"
+    cp "${ROOT_PATH}/External/OpenSSL-for-iPhone/lib/libcrypto.a" "${ROOT_PATH}/External/openssl-1.1.1-ios/lib/"
+}
+
+setup_build_environment
+setup_build
+build
+fat_binary
