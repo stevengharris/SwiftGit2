@@ -19,3 +19,6 @@
 [submodule "External/openssl"]
 	path = External/openssl
 	url = https://github.com/openssl/openssl.git
+[submodule "External/OpenSSL-for-iPhone"]
+	path = External/OpenSSL-for-iPhone
+	url = https://github.com/x2on/OpenSSL-for-iPhone.git

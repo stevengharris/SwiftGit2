@@ -57,6 +57,22 @@
 		622726351C84E52500C53D17 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622726331C84E52500C53D17 /* Credentials.swift */; };
 		62E6FD8F1C727E9C00A312B0 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62E6FD8E1C727E9C00A312B0 /* ZipArchive.framework */; };
 		8F9A51F2209596A40037C3A6 /* repository-with-status.zip in Resources */ = {isa = PBXBuildFile; fileRef = 237731C61F46542B0020A3FE /* repository-with-status.zip */; };
+		AAABA21C250191F600DE7979 /* OID.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE70B3E41A1ACB1A002C3F4E /* OID.swift */; };
+		AAABA21D250191F600DE7979 /* Remotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECB5F6D1A57284700999413 /* Remotes.swift */; };
+		AAABA21E250191F600DE7979 /* CheckoutStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE276B281ACCD3CF00D6DAD7 /* CheckoutStrategy.swift */; };
+		AAABA21F250191F600DE7979 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622726331C84E52500C53D17 /* Credentials.swift */; };
+		AAABA220250191F600DE7979 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB31F6C1A0D78F300F525B9 /* Repository.swift */; };
+		AAABA221250191F600DE7979 /* Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2E3BE51A31261300C67092 /* Objects.swift */; };
+		AAABA222250191F600DE7979 /* Diffs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232861421F4A3A2E00276D65 /* Diffs.swift */; };
+		AAABA223250191F600DE7979 /* References.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECB5F691A56F19900999413 /* References.swift */; };
+		AAABA224250191F600DE7979 /* Libgit2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE36354B1A632C9700D37EC8 /* Libgit2.swift */; };
+		AAABA225250191F600DE7979 /* Pointers.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7A753E1A4A2BCC002DA7E3 /* Pointers.swift */; };
+		AAABA226250191F600DE7979 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5914751A94579000AED74C /* Errors.swift */; };
+		AAABA227250191F600DE7979 /* SwiftGit2.m in Sources */ = {isa = PBXBuildFile; fileRef = BE14AA4F1A1974010015B439 /* SwiftGit2.m */; settings = {COMPILER_FLAGS = "-Wno-documentation-deprecated-sync"; }; };
+		AAABA228250191F600DE7979 /* CommitIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25499A996CA7BD416620A397 /* CommitIterator.swift */; };
+		AAABA22A250191F600DE7979 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 621E66FF1C72A60B00A0F352 /* libz.tbd */; };
+		AAABA22B250191F600DE7979 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 621E66FD1C72A5FF00A0F352 /* libiconv.tbd */; };
+		AAABA22D250191F600DE7979 /* SwiftGit2.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB31F281A0D6F7A00F525B9 /* SwiftGit2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE0991F71A578FB1007D4E6A /* Mantle.zip in Resources */ = {isa = PBXBuildFile; fileRef = BE0991F61A578FB1007D4E6A /* Mantle.zip */; };
 		BE0B1C5D1A9978890004726D /* detached-head.zip in Resources */ = {isa = PBXBuildFile; fileRef = BE0B1C5C1A9978890004726D /* detached-head.zip */; };
 		BE14AA501A1974010015B439 /* SwiftGit2.m in Sources */ = {isa = PBXBuildFile; fileRef = BE14AA4F1A1974010015B439 /* SwiftGit2.m */; };
@@ -123,6 +139,13 @@
 			remoteGlobalIDString = AA7F2DBD24FDC189008447AD;
 			remoteInfo = "OpenSSL_111-iOS";
 		};
+		AAABA2332501923900DE7979 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BEB31F1A1A0D6F7A00F525B9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AAFE9E0F250061E400C82C25;
+			remoteInfo = "libgit2_101-iOS";
+		};
 		AAFE9E172500621E00C82C25 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BEB31F1A1A0D6F7A00F525B9 /* Project object */;
@@ -161,6 +184,7 @@
 		62E6FD8E1C727E9C00A312B0 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = ../Carthage/Checkouts/ZipArchive/build/Debug/ZipArchive.framework; sourceTree = "<group>"; };
 		AA7F2DC224FDC189008447AD /* libOpenSSL_111-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libOpenSSL_111-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA7F2DCA24FED49E008447AD /* liblibssh2_190-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibssh2_190-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAABA231250191F600DE7979 /* SwiftGit2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftGit2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAFE9E16250061E400C82C25 /* liblibgit2_101-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibgit2_101-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE0991F61A578FB1007D4E6A /* Mantle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Mantle.zip; sourceTree = "<group>"; };
 		BE0B1C5C1A9978890004726D /* detached-head.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "detached-head.zip"; sourceTree = "<group>"; };
@@ -231,6 +255,15 @@
 				621E66C21C72958D00A0F352 /* ZipArchive.framework in Frameworks */,
 				621E66C41C72958D00A0F352 /* Nimble.framework in Frameworks */,
 				621E66C51C72958D00A0F352 /* Quick.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAABA229250191F600DE7979 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAABA22A250191F600DE7979 /* libz.tbd in Frameworks */,
+				AAABA22B250191F600DE7979 /* libiconv.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +347,7 @@
 				AA7F2DC224FDC189008447AD /* libOpenSSL_111-iOS.a */,
 				AA7F2DCA24FED49E008447AD /* liblibssh2_190-iOS.a */,
 				AAFE9E16250061E400C82C25 /* liblibgit2_101-iOS.a */,
+				AAABA231250191F600DE7979 /* SwiftGit2.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -461,6 +495,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAABA22C250191F600DE7979 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAABA22D250191F600DE7979 /* SwiftGit2.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BEB31F201A0D6F7A00F525B9 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -585,6 +627,24 @@
 			productName = libgit2;
 			productReference = AA7F2DCA24FED49E008447AD /* liblibssh2_190-iOS.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		AAABA218250191F600DE7979 /* SwiftGit2_101-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAABA22E250191F600DE7979 /* Build configuration list for PBXNativeTarget "SwiftGit2_101-iOS" */;
+			buildPhases = (
+				AAABA21B250191F600DE7979 /* Sources */,
+				AAABA229250191F600DE7979 /* Frameworks */,
+				AAABA22C250191F600DE7979 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AAABA2342501923900DE7979 /* PBXTargetDependency */,
+			);
+			name = "SwiftGit2_101-iOS";
+			productName = "SwiftGit2-OSX";
+			productReference = AAABA231250191F600DE7979 /* SwiftGit2.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */ = {
 			isa = PBXNativeTarget;
@@ -711,6 +771,7 @@
 				AA7F2DBD24FDC189008447AD /* OpenSSL_111-iOS */,
 				AA7F2DC324FED49E008447AD /* libssh2_190-iOS */,
 				AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */,
+				AAABA218250191F600DE7979 /* SwiftGit2_101-iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -884,6 +945,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAABA21B250191F600DE7979 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAABA21C250191F600DE7979 /* OID.swift in Sources */,
+				AAABA21D250191F600DE7979 /* Remotes.swift in Sources */,
+				AAABA21E250191F600DE7979 /* CheckoutStrategy.swift in Sources */,
+				AAABA21F250191F600DE7979 /* Credentials.swift in Sources */,
+				AAABA220250191F600DE7979 /* Repository.swift in Sources */,
+				AAABA221250191F600DE7979 /* Objects.swift in Sources */,
+				AAABA222250191F600DE7979 /* Diffs.swift in Sources */,
+				AAABA223250191F600DE7979 /* References.swift in Sources */,
+				AAABA224250191F600DE7979 /* Libgit2.swift in Sources */,
+				AAABA225250191F600DE7979 /* Pointers.swift in Sources */,
+				AAABA226250191F600DE7979 /* Errors.swift in Sources */,
+				AAABA227250191F600DE7979 /* SwiftGit2.m in Sources */,
+				AAABA228250191F600DE7979 /* CommitIterator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BEB31F1E1A0D6F7A00F525B9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -947,6 +1028,11 @@
 			target = AA7F2DBD24FDC189008447AD /* OpenSSL_111-iOS */;
 			targetProxy = AA7F2DCB24FED5E6008447AD /* PBXContainerItemProxy */;
 		};
+		AAABA2342501923900DE7979 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */;
+			targetProxy = AAABA2332501923900DE7979 /* PBXContainerItemProxy */;
+		};
 		AAFE9E182500621E00C82C25 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AA7F2DC324FED49E008447AD /* libssh2_190-iOS */;
@@ -991,6 +1077,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2";
+				VALID_ARCHS = arm64;
 			};
 			name = Debug;
 		};
@@ -1020,6 +1107,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2";
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};
@@ -1120,6 +1208,76 @@
 			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		AAABA22F250191F600DE7979 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB31F501A0D75EE00F525B9 /* iOS-Framework.xcconfig */;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/External/libgit2-1.0.1/include",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SwiftGit2/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"External/libgit2-1.0.1-ios",
+					"External/libssh2-1.9.0-ios/lib",
+					"External/openssl-1.1.1-ios/lib",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = (
+					"-force_load",
+					"External/libgit2-1.0.1-ios/libgit2-1.0.1-ios.a",
+					"-lgit2-1.0.1-ios",
+					"-lssl",
+					"-lcrypto",
+					"-lssh2-1.9.0-ios",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
+				PRODUCT_NAME = SwiftGit2;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
+				VALID_ARCHS = arm64;
+				WARNING_CFLAGS = (
+					"-Wno-error=unknown-warning-option",
+					"-Wno-gcc-compat",
+					"-Wno-unused-const-variable",
+				);
+			};
+			name = Debug;
+		};
+		AAABA230250191F600DE7979 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB31F501A0D75EE00F525B9 /* iOS-Framework.xcconfig */;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/External/libgit2-1.0.1/include",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SwiftGit2/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"External/libgit2-1.0.1-ios",
+					"External/libssh2-1.9.0-ios/lib",
+					"External/openssl-1.1.1-ios/lib",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = (
+					"-force_load",
+					"External/libgit2-1.0.1-ios/libgit2-1.0.1-ios.a",
+					"-lgit2-1.0.1-ios",
+					"-lssl",
+					"-lcrypto",
+					"-lssh2-1.9.0-ios",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
+				PRODUCT_NAME = SwiftGit2;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
+				VALID_ARCHS = arm64;
+				WARNING_CFLAGS = (
+					"-Wno-error=unknown-warning-option",
+					"-Wno-gcc-compat",
+					"-Wno-unused-const-variable",
+				);
 			};
 			name = Release;
 		};
@@ -1338,6 +1496,15 @@
 			buildConfigurations = (
 				AA7F2DC824FED49E008447AD /* Debug */,
 				AA7F2DC924FED49E008447AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAABA22E250191F600DE7979 /* Build configuration list for PBXNativeTarget "SwiftGit2_101-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAABA22F250191F600DE7979 /* Debug */,
+				AAABA230250191F600DE7979 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
