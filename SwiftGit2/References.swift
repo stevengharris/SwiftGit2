@@ -107,6 +107,7 @@ public struct Branch: ReferenceType, Hashable {
 		longName = String(validatingUTF8: git_reference_name(pointer))!
 
 		var oid: OID
+		#if LIBGIT2V1
 		if git_reference_type(pointer).rawValue == GIT_REFERENCE_SYMBOLIC.rawValue {
 			var resolved: OpaquePointer? = nil
 			let success = git_reference_resolve(&resolved, pointer)
@@ -118,6 +119,19 @@ public struct Branch: ReferenceType, Hashable {
 		} else {
 			oid = OID(git_reference_target(pointer).pointee)
 		}
+		#else
+		if git_reference_type(pointer).rawValue == GIT_REF_SYMBOLIC.rawValue {
+			var resolved: OpaquePointer? = nil
+			let success = git_reference_resolve(&resolved, pointer)
+			guard success == GIT_OK.rawValue else {
+				return nil
+			}
+			oid = OID(git_reference_target(resolved).pointee)
+			git_reference_free(resolved)
+		} else {
+			oid = OID(git_reference_target(pointer).pointee)
+		}
+		#endif
 		commit = PointerTo<Commit>(oid)
 	}
 }
@@ -178,7 +192,11 @@ public enum TagReference: ReferenceType, Hashable {
 		var oid = git_reference_target(pointer).pointee
 
 		var pointer: OpaquePointer? = nil
+		#if LIBGIT2V1
 		let result = git_object_lookup(&pointer, repo, &oid, GIT_OBJECT_TAG)
+		#else
+		let result = git_object_lookup(&pointer, repo, &oid, GIT_OBJ_TAG)
+		#endif
 		if result == GIT_OK.rawValue {
 			self = .annotated(name, Tag(pointer!))
 		} else {

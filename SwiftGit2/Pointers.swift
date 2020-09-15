@@ -13,8 +13,13 @@ public protocol PointerType: Hashable {
 	/// The OID of the referenced object.
 	var oid: OID { get }
 
-	/// The libgit2 `git_otype` of the referenced object.
+	#if LIBGIT2V1
+	/// The libgit2 `git_object_t` of the referenced object.
 	var type: git_object_t { get }
+	#else
+	/// The libgit2 `git_otype` of the referenced object.
+	var type: git_otype { get }
+	#endif
 }
 
 public extension PointerType {
@@ -48,6 +53,7 @@ public enum Pointer: PointerType {
 		}
 	}
 
+	#if LIBGIT2V1
 	public var type: git_object_t {
 		switch self {
 		case .commit:
@@ -61,7 +67,7 @@ public enum Pointer: PointerType {
 		}
 	}
 
-	/// Create an instance with an OID and a libgit2 `git_otype`.
+	/// Create an instance with an OID and a libgit2 `git_object_t`.
 	init?(oid: OID, type: git_object_t) {
 		switch type {
 		case GIT_OBJECT_COMMIT:
@@ -76,6 +82,36 @@ public enum Pointer: PointerType {
 			return nil
 		}
 	}
+	#else
+	public var type: git_otype {
+		switch self {
+		case .commit:
+			return GIT_OBJ_COMMIT
+		case .tree:
+			return GIT_OBJ_TREE
+		case .blob:
+			return GIT_OBJ_BLOB
+		case .tag:
+			return GIT_OBJ_TAG
+		}
+	}
+
+	/// Create an instance with an OID and a libgit2 `git_otype`.
+	init?(oid: OID, type: git_otype) {
+		switch type {
+		case GIT_OBJ_COMMIT:
+			self = .commit(oid)
+		case GIT_OBJ_TREE:
+			self = .tree(oid)
+		case GIT_OBJ_BLOB:
+			self = .blob(oid)
+		case GIT_OBJ_TAG:
+			self = .tag(oid)
+		default:
+			return nil
+		}
+	}
+	#endif
 }
 
 extension Pointer: CustomStringConvertible {
@@ -96,9 +132,15 @@ extension Pointer: CustomStringConvertible {
 public struct PointerTo<T: ObjectType>: PointerType {
 	public let oid: OID
 
+	#if LIBGIT2V1
 	public var type: git_object_t {
 		return T.type
 	}
+	#else
+	public var type: git_otype {
+		return T.type
+	}
+	#endif
 
 	public init(_ oid: OID) {
 		self.oid = oid

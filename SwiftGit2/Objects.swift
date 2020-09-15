@@ -11,7 +11,11 @@ import Clibgit2
 
 /// A git object.
 public protocol ObjectType {
+	#if LIBGIT2V1
 	static var type: git_object_t { get }
+	#else
+	static var type: git_otype { get }
+	#endif
 
 	/// The OID of the object.
 	var oid: OID { get }
@@ -84,7 +88,11 @@ extension Signature: Hashable {
 
 /// A git commit.
 public struct Commit: ObjectType, Hashable {
+	#if LIBGIT2V1
 	public static let type = GIT_OBJECT_COMMIT
+	#else
+	public static let type = GIT_OBJ_COMMIT
+	#endif
 
 	/// The OID of the commit.
 	public let oid: OID
@@ -120,7 +128,11 @@ public struct Commit: ObjectType, Hashable {
 
 /// A git tree.
 public struct Tree: ObjectType, Hashable {
+	#if LIBGIT2V1
 	public static let type = GIT_OBJECT_TREE
+	#else
+	public static let type = GIT_OBJ_TREE
+	#endif
 
 	/// An entry in a `Tree`.
 	public struct Entry: Hashable {
@@ -176,7 +188,11 @@ extension Tree.Entry: CustomStringConvertible {
 
 /// A git blob.
 public struct Blob: ObjectType, Hashable {
+	#if LIBGIT2V1
 	public static let type = GIT_OBJECT_BLOB
+	#else
+	public static let type = GIT_OBJ_BLOB
+	#endif
 
 	/// The OID of the blob.
 	public let oid: OID
@@ -195,7 +211,11 @@ public struct Blob: ObjectType, Hashable {
 
 /// An annotated git tag.
 public struct Tag: ObjectType, Hashable {
+	#if LIBGIT2V1
 	public static let type = GIT_OBJECT_TAG
+	#else
+	public static let type = GIT_OBJ_TAG
+	#endif
 
 	/// The OID of the tag.
 	public let oid: OID
