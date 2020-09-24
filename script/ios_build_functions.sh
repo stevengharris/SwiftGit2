@@ -93,3 +93,32 @@ function build_all_archs ()
     eval $finish_build
 }
 
+function build_catalyst ()
+{
+    setup_build_environment
+    
+    local setup=$1
+    local build_arch=$2
+    local finish_build=$3
+
+    # run the prepare function
+    eval $setup
+
+    echo "Building for Mac Catalyst"
+    ARCH=x86_64
+    PLATFORM=MacOSX
+    SDKVERSION=10.15
+    SDKNAME="${PLATFORM}${SDKVERSION}"
+    SDKROOT="$(ios_sdk_path ${SDKNAME})"
+    echo "SDKROOT=${SDKROOT}"
+        
+    echo "Building ${LIBRARY_NAME} for ${PLATFORM} ${SDKNAME} ${ARCH}"
+    echo "Please stand by..."
+
+    # run the per arch build command
+    eval $build_arch
+
+    # finish the build (usually lipo)
+    eval $finish_build
+}
+

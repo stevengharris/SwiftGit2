@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Build libssh2 1.9.0 using openssl 1.1.1d
+# Place results in libssh2-1.9.0-catalyst
+
+set -e
+
+# source the common build functions
+SCRIPT_DIR=$(dirname "$0")
+source "${SCRIPT_DIR}/ios_build_functions.sh"
+
+function setup ()
+{
+    if [ -f "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/lib/libssh2-1.9.0-catalyst.a" ]
+    then
+        echo "No update needed."
+        exit 0
+    fi
+    LIBRARY_NAME="libssh2"
+}
+
+function build_ssh2 () 
+{
+    mkdir -p "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/lib" "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/lib" "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/src"
+
+    rm -rf "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/src/libssh2"
+    # use rsync to avoid hidden files
+    rsync -rv --exclude=".*" "${ROOT_PATH}/External/libssh2-1.9.0" "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/src/"
+    # cp -R "${ROOT_PATH}/External/libssh2-1.9.0" "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/src/"
+    pushd "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/src/libssh2-1.9.0" > /dev/null
+
+    export CFLAGS="-arch ${ARCH} -fembed-bitcode -pipe -no-cpp-precomp -isysroot ${SDKROOT} -miphoneos-version-min=${IPHONEOS_DEPLOYMENT_TARGET} --target=arm64-apple-ios13.0-macabi"
+    export CPPFLAGS="-arch ${ARCH} -fembed-bitcode -pipe -no-cpp-precomp -isysroot ${SDKROOT} -miphoneos-version-min=${IPHONEOS_DEPLOYMENT_TARGET}"
+
+    mkdir -p "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/bin/${SDKNAME}-${ARCH}.sdk"
+
+    LOG="${ROOT_PATH}/External/libssh2-1.9.0-catalyst/bin/${SDKNAME}-${ARCH}.sdk/build-libssh2.log"
+    echo "${LOG}"
+
+    echo "Build date: $(DATE)" >> "${LOG}" 2>&1
+    ./buildconf >> "${LOG}" 2>&1
+    ./configure --host=${HOST} --prefix="${ROOT_PATH}/External/libssh2-1.9.0-catalyst/bin/${SDKNAME}-${ARCH}.sdk" --with-crypto=openssl --with-libssl-prefix="${ROOT_PATH}/External/openssl-1.1.1-catalyst" --disable-shared --enable-static >> "${LOG}" 2>&1
+    make >> "${LOG}" 2>&1
+    make install >> "${LOG}" 2>&1
+    popd > /dev/null
+
+    BUILT_LIBS+=("${ROOT_PATH}/External/libssh2-1.9.0-catalyst/bin/${SDKNAME}-${ARCH}.sdk/lib/libssh2.a")
+}
+
+function fat_binary ()
+{
+    echo "Building fat binary..."
+
+    lipo -create "${BUILT_LIBS[@]}" -output "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/lib/libssh2-1.9.0-catalyst.a"
+    mkdir -p "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/include/libssh2"
+    cp -R "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/bin/MacOSX${SDKVERSION}-x86_64.sdk/include/libssh2.h" "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/include/libssh2/"
+
+    echo "Building done."
+}
+
+build_catalyst setup build_ssh2 fat_binary
