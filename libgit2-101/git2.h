@@ -1,0 +1,1 @@
+/Users/steve/XCodeProjects/CodeLog/SwiftGit2/External/libgit2/include/git2.h
