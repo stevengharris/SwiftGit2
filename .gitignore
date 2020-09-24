@@ -32,7 +32,6 @@ External/libssh2-ios
 External/openssl-1.1.1-ios/
 External/libgit2-1.0.1-ios/
 External/libssh2-1.9.0-ios/
-SwiftGit2.xcodeproj/xcshareddata/xcschemes/
 
 ### fastlane ###
 # fastlane - A streamlined workflow tool for Cocoa deployment
