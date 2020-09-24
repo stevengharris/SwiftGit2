@@ -1573,7 +1573,7 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG -D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1-ios";
 				VALID_ARCHS = arm64;
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
@@ -1609,7 +1609,7 @@
 				OTHER_SWIFT_FLAGS = "-D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1-ios";
 				VALID_ARCHS = arm64;
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
