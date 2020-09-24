@@ -847,7 +847,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "GitHub, Inc";
 				TargetAttributes = {
 					621E66611C72958800A0F352 = {
@@ -1474,24 +1474,24 @@
 				);
 				INFOPLIST_FILE = SwiftGit2/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
-					"External/libgit2-1.0.1-ios",
-					"External/libssh2-1.9.0-ios/lib",
-					"External/openssl-1.1.1-ios/lib",
+					"External/libgit2-1.0.1-catalyst",
+					"External/libssh2-1.9.0-catalyst/lib",
+					"External/openssl-1.1.1-catalyst/lib",
 					"$(inherited)",
 				);
 				OTHER_LDFLAGS = (
 					"-force_load",
-					"External/libgit2-1.0.1-ios/libgit2-1.0.1-ios.a",
-					"-lgit2-1.0.1-ios",
+					"External/libgit2-1.0.1-catalyst/libgit2-1.0.1-catalyst.a",
+					"-lgit2-1.0.1-catalyst",
 					"-lssl",
 					"-lcrypto",
-					"-lssh2-1.9.0-ios",
+					"-lssh2-1.9.0-catalyst",
 				);
 				OTHER_SWIFT_FLAGS = "-D DEBUG -D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2_Catalyst;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
 					"-Wno-gcc-compat",
@@ -1510,24 +1510,24 @@
 				);
 				INFOPLIST_FILE = SwiftGit2/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
-					"External/libgit2-1.0.1-ios",
-					"External/libssh2-1.9.0-ios/lib",
-					"External/openssl-1.1.1-ios/lib",
+					"External/libgit2-1.0.1-catalyst",
+					"External/libssh2-1.9.0-catalyst/lib",
+					"External/openssl-1.1.1-catalyst/lib",
 					"$(inherited)",
 				);
 				OTHER_LDFLAGS = (
 					"-force_load",
-					"External/libgit2-1.0.1-ios/libgit2-1.0.1-ios.a",
-					"-lgit2-1.0.1-ios",
+					"External/libgit2-1.0.1-catalyst/libgit2-1.0.1-catalyst.a",
+					"-lgit2-1.0.1-catalyst",
 					"-lssl",
 					"-lcrypto",
-					"-lssh2-1.9.0-ios",
+					"-lssh2-1.9.0-catalyst",
 				);
 				OTHER_SWIFT_FLAGS = "-D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2_Catalyst;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
 					"-Wno-gcc-compat",
@@ -1632,7 +1632,7 @@
 				INSTALL_GROUP = "";
 				INSTALL_MODE_FLAG = "";
 				INSTALL_OWNER = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SWIFT_VERSION = 5.0;
 			};
@@ -1647,7 +1647,7 @@
 				INSTALL_GROUP = "";
 				INSTALL_MODE_FLAG = "";
 				INSTALL_OWNER = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SWIFT_VERSION = 5.0;
 			};
