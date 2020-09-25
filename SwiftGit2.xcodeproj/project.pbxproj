@@ -1551,6 +1551,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB31F501A0D75EE00F525B9 /* iOS-Framework.xcconfig */;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2-1.0.1/include",
 					"$(inherited)",
@@ -1562,6 +1563,7 @@
 					"External/openssl-1.1.1-ios/lib",
 					"$(inherited)",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-force_load",
 					"External/libgit2-1.0.1-ios/libgit2-1.0.1-ios.a",
@@ -1573,8 +1575,9 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG -D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2;
+				SKIP_INSTALL = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = "arm64 x86_64";
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
 					"-Wno-gcc-compat",
@@ -1587,6 +1590,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB31F501A0D75EE00F525B9 /* iOS-Framework.xcconfig */;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2-1.0.1/include",
 					"$(inherited)",
@@ -1598,6 +1602,7 @@
 					"External/openssl-1.1.1-ios/lib",
 					"$(inherited)",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-force_load",
 					"External/libgit2-1.0.1-ios/libgit2-1.0.1-ios.a",
@@ -1609,8 +1614,9 @@
 				OTHER_SWIFT_FLAGS = "-D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2;
+				SKIP_INSTALL = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = "arm64 x86_64";
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
 					"-Wno-gcc-compat",
@@ -1623,7 +1629,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				PRODUCT_NAME = git2;
+				SKIP_INSTALL = NO;
 			};
 			name = Debug;
 		};
@@ -1631,7 +1639,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				PRODUCT_NAME = git2;
+				SKIP_INSTALL = NO;
 			};
 			name = Release;
 		};
