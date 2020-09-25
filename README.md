@@ -1,86 +1,62 @@
 # SwiftGit2
-[![Build Status](https://travis-ci.org/SwiftGit2/SwiftGit2.svg)](https://travis-ci.org/SwiftGit2/SwiftGit2)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](#carthage)
-[![GitHub release](https://img.shields.io/github/release/SwiftGit2/SwiftGit2.svg)](https://github.com/SwiftGit2/SwiftGit2/releases)
-![Swift 5.2.x](https://img.shields.io/badge/Swift-5.2.x-orange.svg)
 
-Swift bindings to [libgit2](https://github.com/libgit2/libgit2).
+Please see [SwiftGit2](https://github.com/SwiftGit2/SwiftGit2) that this repo was forked-from for the original README.
 
-```swift
-let URL: URL = ...
-let result = Repository.at(URL)
-switch result {
-case let .success(repo):
-    let latestCommit = repo
-        .HEAD()
-        .flatMap {
-            repo.commit($0.oid)
-        }
+## Mac Catalyst Changes
 
-    switch latestCommit {
-    case let .success(commit):
-        print("Latest Commit: \(commit.message) by \(commit.author.name)")
+I made the following changes to [SwiftGit2](https://github.com/SwiftGit2/SwiftGit2) to update the underlying library versions it consumes and to accommodate Mac Catalyst.
 
-    case let .failure(error):
-        print("Could not get commit: \(error)")
-    }
+1. Updated OpenSSL version from 1.0.2p to 1.1.1d. This was done by pulling in [OpenSSL-for-iPhone](https://github.com/x2on/OpenSSL-for-iPhone) as a submodule in /External, simlarly to the way the original used [OpenSSL](https://github.com/openssl/openssl).
 
-case let .failure(error):
-    print("Could not open repository: \(error)")
-}
-```
+   Uses new update_libssl_111_ios and update_libssl_111_catalyst scripts.  If I could have made the original SwiftGit2 script, update_libssl_ios, work with the newer OpenSSL version, I might have done all this work in a way that would make for a nice pull request. However, I wasted too much time tryign to get that to happen and finally decided just to use OpenSSL-for-iPhone.
+   
+2. Updated [libssh2](https://github.com/libssh2/libssh2) version from 1.8.0 to 1.9.0.
 
-## Design
-SwiftGit2 uses value objects wherever possible. That means using Swift’s `struct`s and `enum`s without holding references to libgit2 objects. This has a number of advantages:
+   Uses new update_libssh2_190_ios and update_libssh2_190_catalyst scripts
+   
+3. Updated [libgit2](https://github.com/libgit2/libgit2) version from 0.27.7 to 1.0.1.
 
-1. Values can be used concurrently.
-2. Consuming values won’t result in disk access.
-3. Disk access can be contained to a smaller number of APIs.
+   Uses new update_libgit2_101_ios and update_libgit2_101_catalyst scripts
+   
+4. Added new Xcode targets:
 
-This vastly simplifies the design of long-lived applications, which are the most common use case with Swift. Consequently, SwiftGit2 APIs don’t necessarily map 1-to-1 with libgit2 APIs.
+   OpenSSL_111-iOS - Produce iOS versions libcrypto.a and ssl.a as a fat library in External/libgit2-1.0.1-ios
+   
+   OpenSSL_111-Catalyst - Produce Mac Catalyst versions libcrypto.a and ssl.a as a fat library in External/libgit2-1.0.1-catalyst
+   
+   libssh2_190-iOS - Produce iOS version of libssh2 as a fat library in libssh2-1.9.0-ios
+   
+   libssh2_190-Catalyst - Produce Mac Catalyst version of libssh2 as a fat library in libssh2-1.9.0-catalyst
+   
+   libgit2_101-iOS - Produce iOS version of libgit2 as a fat library in libgit2-1.0.1-ios
+   
+   libgit2_101-Catalyst - Produce Mac Catalyst version of libgit2 as a fat library in libgit2-1.0.1-catalyst
+   
+   SwiftGit2_101-iOS - Produce an iOS framework, SwiftGit2.framework like the [SwiftGit2](https://github.com/SwiftGit2/SwiftGit2), but for updated openssl, libssh2, and libgit.
+   
+   SwiftGit2_101-Catalyst - Produce a Mac Catalyst framework, SwiftGit2_Catalyst.framework like the [SwiftGit2](https://github.com/SwiftGit2/SwiftGit2), but for updated openssl, libssh2, and libgit.
 
-All methods for reading from or writing to a repository are on SwiftGit’s only `class`: `Repository`. This highlights the failability and mutation of these methods, while freeing up all other instances to be immutable `struct`s and `enum`s.
+Note that the underlying scripts build arm64 and x86_64 for the iPhone and simulator, and x86_64 for Mac Catalyst, regardless of build settings.
 
-## Required Tools
-To build SwiftGit2, you'll need the following tools installed locally:
-
-* cmake
-* libssh2
-* libtool
-* autoconf
-* automake
-* pkg-config
+To keep the original SwiftGit2 targets working, I added a -D LIBGIT2V1 flag to the build settings. There were some changes needed in the .swift code to handle the move to libgit2 v1.0.1. These are handled conditionally; e.g., in Repository.swift you will see:
 
 ```
-brew install cmake libssh2 libtool autoconf automake pkg-config
+#if LIBGIT2V1
+ <new code>
+#else
+ <old code>
+#endif
 ```
 
-## Adding SwiftGit2 to your Project
-The easiest way to add SwiftGit2 to your project is to use [Carthage](https://github.com/Carthage/Carthage). Simply add `github "SwiftGit2/SwiftGit2"` to your `Cartfile` and run `carthage update`.
+Unfortunately, I didn't sort out how to combine things in a .xcframework. You can consume the separately named frameworks in your Swift project by adding them both (which is all a .xcframework would do anyway). However, you need to do the includes in your Swift code conditionally; e.g.,
 
-If you’d like, you can do things the ~~hard~~ old-fashioned way:
-
-1. Add SwiftGit2 as a submodule of your project’s repository.
-2. Run `git submodule update --init --recursive` to fetch all of SwiftGit2’s depedencies.
-3. Add `SwiftGit2.xcodeproj` to your project’s Xcode project or workspace.
-4. On the “Build Phases” tab of your application target, add `SwiftGit2.framework` to the “Link Binary With Libraries” phase. SwiftGit2 must also be added to a “Copy Frameworks” build phase.
-5. **If you added SwiftGit2 to a project (not a workspace)**, you will also need to add the appropriate SwiftGit2 target to the “Target Dependencies” of your application.
-
-## Building SwiftGit2 Manually
-If you want to build a copy of SwiftGit2 without Carthage, possibly for development:
-
-1. Clone SwiftGit2
-2. Run `git submodule update --init --recursive` to clone the submodules
-3. Build in Xcode
-
-## Contributions
-We :heart: to receive pull requests! GitHub makes it easy:
-
-1. Fork the repository
-2. Create a branch with your changes
-3. Send a Pull Request
-
-All contributions should match GitHub’s [Swift Style Guide](https://github.com/github/swift-style-guide).
+```
+#if targetEnvironment(macCatalyst)
+import SwiftGit2_Catalyst
+#else
+import SwiftGit2
+#endif
+```
 
 ## License
-SwiftGit2 is available under the MIT license.
+These changes to SwiftGit2 are available under the MIT license, like the original.
