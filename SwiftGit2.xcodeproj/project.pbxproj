@@ -226,7 +226,7 @@
 		AAA05280251D3C83004A4BD8 /* liblibssh2_190-Catalyst.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibssh2_190-Catalyst.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA052EE251D3F74004A4BD8 /* SwiftGit2_Catalyst.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftGit2_Catalyst.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAABA231250191F600DE7979 /* SwiftGit2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftGit2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAFE9E16250061E400C82C25 /* liblibgit2_101-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibgit2_101-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAFE9E16250061E400C82C25 /* libgit2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libgit2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE0991F61A578FB1007D4E6A /* Mantle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Mantle.zip; sourceTree = "<group>"; };
 		BE0B1C5C1A9978890004726D /* detached-head.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "detached-head.zip"; sourceTree = "<group>"; };
 		BE14AA4F1A1974010015B439 /* SwiftGit2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftGit2.m; sourceTree = "<group>"; };
@@ -396,7 +396,7 @@
 				621E66F21C729EBB00A0F352 /* libssh2.a */,
 				AA7F2DC224FDC189008447AD /* libOpenSSL_111-iOS.a */,
 				AA7F2DCA24FED49E008447AD /* liblibssh2_190-iOS.a */,
-				AAFE9E16250061E400C82C25 /* liblibgit2_101-iOS.a */,
+				AAFE9E16250061E400C82C25 /* libgit2.a */,
 				AAABA231250191F600DE7979 /* SwiftGit2.framework */,
 				AAA05230251D39E2004A4BD8 /* liblibgit2_101-Catalyst.a */,
 				AAA05269251D3C53004A4BD8 /* libOpenSSL_111-Catalyst.a */,
@@ -786,7 +786,7 @@
 			);
 			name = "libgit2_101-iOS";
 			productName = libgit2;
-			productReference = AAFE9E16250061E400C82C25 /* liblibgit2_101-iOS.a */;
+			productReference = AAFE9E16250061E400C82C25 /* libgit2.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		BEB31F221A0D6F7A00F525B9 /* SwiftGit2-OSX */ = {
@@ -888,21 +888,21 @@
 			targets = (
 				BEB31F221A0D6F7A00F525B9 /* SwiftGit2-OSX */,
 				BEB31F2D1A0D6F7A00F525B9 /* SwiftGit2-OSXTests */,
+				BEB31F8E1A0E563900F525B9 /* libgit2-OSX */,
 				621E66611C72958800A0F352 /* SwiftGit2-iOS */,
 				621E66B61C72958D00A0F352 /* SwiftGit2-iOSTests */,
-				BEB31F8E1A0E563900F525B9 /* libgit2-OSX */,
 				621E66DC1C729CE500A0F352 /* libgit2-iOS */,
-				621E66E71C729EB800A0F352 /* OpenSSL-iOS */,
 				621E66ED1C729EBB00A0F352 /* libssh2-iOS */,
-				C9CE0DD21E0710BD0053205D /* SwiftLint */,
-				AA7F2DBD24FDC189008447AD /* OpenSSL_111-iOS */,
-				AA7F2DC324FED49E008447AD /* libssh2_190-iOS */,
-				AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */,
+				621E66E71C729EB800A0F352 /* OpenSSL-iOS */,
 				AAABA218250191F600DE7979 /* SwiftGit2_101-iOS */,
-				AAA05229251D39E2004A4BD8 /* libgit2_101-Catalyst */,
-				AAA05264251D3C53004A4BD8 /* OpenSSL_111-Catalyst */,
-				AAA05279251D3C83004A4BD8 /* libssh2_190-Catalyst */,
+				AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */,
+				AA7F2DC324FED49E008447AD /* libssh2_190-iOS */,
+				AA7F2DBD24FDC189008447AD /* OpenSSL_111-iOS */,
 				AAA052D5251D3F74004A4BD8 /* SwiftGit2_101-Catalyst */,
+				AAA05229251D39E2004A4BD8 /* libgit2_101-Catalyst */,
+				AAA05279251D3C83004A4BD8 /* libssh2_190-Catalyst */,
+				AAA05264251D3C53004A4BD8 /* OpenSSL_111-Catalyst */,
+				C9CE0DD21E0710BD0053205D /* SwiftLint */,
 			);
 		};
 /* End PBXProject section */
@@ -1573,7 +1573,7 @@
 				OTHER_SWIFT_FLAGS = "-D DEBUG -D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1-ios";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
 				VALID_ARCHS = arm64;
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
@@ -1609,7 +1609,7 @@
 				OTHER_SWIFT_FLAGS = "-D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
 				PRODUCT_NAME = SwiftGit2;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1-ios";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
 				VALID_ARCHS = arm64;
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
@@ -1623,7 +1623,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = git2;
 			};
 			name = Debug;
 		};
@@ -1631,7 +1631,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB31F511A0D75EE00F525B9 /* iOS-StaticLibrary.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = git2;
 			};
 			name = Release;
 		};
@@ -1643,8 +1643,8 @@
 				INSTALL_GROUP = "";
 				INSTALL_MODE_FLAG = "";
 				INSTALL_OWNER = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1658,8 +1658,8 @@
 				INSTALL_GROUP = "";
 				INSTALL_MODE_FLAG = "";
 				INSTALL_OWNER = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
