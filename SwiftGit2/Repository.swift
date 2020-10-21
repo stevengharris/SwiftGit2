@@ -792,17 +792,16 @@ public final class Repository {
 				return .failure(err)
 			}
 			var parentID = git_oid()
-			if git_oid_iszero(&parentID) == 1 {
-				// The parent is nil, so just commit the tree without parentCommits
-				return commit(tree: OID(treeOID), parents: [], message: message, signature: signature)
-			} else {
-				let nameToIDResult = git_reference_name_to_id(&parentID, self.pointer, "HEAD")
-				guard nameToIDResult == GIT_OK.rawValue else {
+			let nameToIDResult = git_reference_name_to_id(&parentID, self.pointer, "HEAD")
+			guard nameToIDResult == GIT_OK.rawValue else {
+				if git_oid_iszero(&parentID) == 1 {
+					return commit(tree: OID(treeOID), parents: [], message: message, signature: signature)
+				} else {
 					return .failure(NSError(gitError: nameToIDResult, pointOfFailure: "git_reference_name_to_id"))
 				}
-				return commit(OID(parentID)).flatMap { parentCommit in
-					commit(tree: OID(treeOID), parents: [parentCommit], message: message, signature: signature)
-				}
+			}
+			return commit(OID(parentID)).flatMap { parentCommit in
+				commit(tree: OID(treeOID), parents: [parentCommit], message: message, signature: signature)
 			}
 		}
 	}
