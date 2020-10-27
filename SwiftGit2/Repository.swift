@@ -93,6 +93,499 @@ private func cloneOptions(bare: Bool = false, localClone: Bool = false, fetchOpt
 	return options
 }
 
+extension Repository {
+	/**
+	Extensions to return Result success or throw exceptions if Result failure
+	*/
+	
+	// MARK: - Creating Repositories
+
+	/// Create a new repository at the given URL.
+	///
+	/// URL - The URL of the repository.
+	///
+	/// Returns a `Result` with a `Repository` or throws an error.
+	public class func create(at url: URL) throws -> Repository {
+		let result = Repository.create(at: url) as Result
+		switch result {
+		case let .success(repo):
+			return repo
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Load the repository at the given URL.
+	///
+	/// URL - The URL of the repository.
+	///
+	/// Returns a `Result` with a `Repository` or throws an error.
+	public class func at(_ url: URL) throws -> Repository {
+		let result = Repository.at(url) as Result
+		switch result {
+		case let .success(repo):
+			return repo
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Clone the repository from a given URL.
+	///
+	/// remoteURL        - The URL of the remote repository
+	/// localURL         - The URL to clone the remote repository into
+	/// localClone       - Will not bypass the git-aware transport, even if remote is local.
+	/// bare             - Clone remote as a bare repository.
+	/// credentials      - Credentials to be used when connecting to the remote.
+	/// checkoutStrategy - The checkout strategy to use, if being checked out.
+	/// checkoutProgress - A block that's called with the progress of the checkout.
+	///
+	/// Returns a `Result` with a `Repository` or throws an error.
+	public class func clone(from remoteURL: URL, to localURL: URL, localClone: Bool = false, bare: Bool = false,
+							credentials: Credentials = .default, checkoutStrategy: CheckoutStrategy = .Safe,
+							checkoutProgress: CheckoutProgressBlock? = nil) throws -> Repository {
+		let result = Repository.clone(from: remoteURL, to: localURL, localClone: localClone, bare: bare, credentials: credentials, checkoutStrategy: checkoutStrategy, checkoutProgress: checkoutProgress) as Result
+		switch result {
+		case let .success(repo):
+			return repo
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	// MARK: - Object Lookups
+
+	/// Load a libgit2 object and transform it to something else.
+	///
+	/// oid       - The OID of the object to look up.
+	/// type      - The type of the object to look up.
+	/// transform - A function that takes the libgit2 object and transforms it
+	///             into something else.
+	///
+	/// Returns the result of calling `transform` or throws an error if the object
+	/// cannot be loaded.
+	#if LIBGIT2V1
+	/// Loads the object with the given OID.
+	///
+	/// oid - The OID of the blob to look up.
+	///
+	/// Returns a `Blob`, `Commit`, `Tag`, or `Tree` if one exists, or throws an error.
+	public func object(_ oid: OID) throws -> ObjectType {
+		let result = object(oid) as Result
+		switch result {
+		case let .success(objectType):
+			return objectType
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Loads the blob with the given OID.
+	///
+	/// oid - The OID of the blob to look up.
+	///
+	/// Returns the blob if it exists, or throws an error.
+	public func blob(_ oid: OID) throws -> Blob {
+		let result = blob(oid) as Result
+		switch result {
+		case let .success(blob):
+			return blob
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Loads the commit with the given OID.
+	///
+	/// oid - The OID of the commit to look up.
+	///
+	/// Returns the commit if it exists, or throws an error.
+	public func commit(_ oid: OID) throws -> Commit {
+		let result = commit(oid) as Result
+		switch result {
+		case let .success(commit):
+			return commit
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Loads the tag with the given OID.
+	///
+	/// oid - The OID of the tag to look up.
+	///
+	/// Returns the tag if it exists, or throws an error.
+	public func tag(_ oid: OID) throws -> Tag {
+		let result = tag(oid) as Result
+		switch result {
+		case let .success(tag):
+			return tag
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Loads the tree with the given OID.
+	///
+	/// oid - The OID of the tree to look up.
+	///
+	/// Returns the tree if it exists, or throws an error.
+	public func tree(_ oid: OID) throws -> Tree {
+		let result = tree(oid) as Result
+		switch result {
+		case let .success(tree):
+			return tree
+		case let .failure(error):
+			throw error
+		}
+	}
+	#endif
+
+	/// Loads the referenced object from the pointer.
+	///
+	/// pointer - A pointer to an object.
+	///
+	/// Returns the object if it exists, or throws an error.
+	public func object<T>(from pointer: PointerTo<T>) throws -> T {
+		let result = object(from: pointer) as Result
+		switch result {
+		case let .success(object):
+			return object
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Loads the referenced object from the pointer.
+	///
+	/// pointer - A pointer to an object.
+	///
+	/// Returns the object if it exists, or throws an error.
+	public func object(from pointer: Pointer) throws -> ObjectType {
+		let result = object(from: pointer) as Result
+		switch result {
+		case let .success(objectType):
+			return objectType
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	// MARK: - Remote Lookups
+
+	/// Loads all the remotes in the repository.
+	///
+	/// Returns an array of remotes, or throws an error.
+	public func allRemotes() throws -> [Remote] {
+		let result = allRemotes() as Result
+		switch result {
+		case let .success(remotes):
+			return remotes
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Load a remote from the repository.
+	///
+	/// name - The name of the remote.
+	///
+	/// Returns the remote if it exists, or throws an error.
+	public func remote(named name: String) throws -> Remote {
+		let result = remote(named: name) as Result
+		switch result {
+		case let .success(remote):
+			return remote
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Download new data and update tips
+	public func fetch(_ remote: Remote) throws {
+		let result = fetch(remote) as Result
+		switch result {
+		case .success:
+			return
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	// MARK: - Reference Lookups
+
+	/// Load all the references with the given prefix (e.g. "refs/heads/")
+	public func references(withPrefix prefix: String) throws -> [ReferenceType] {
+		let result = references(withPrefix: prefix) as Result
+		switch result {
+		case let .success(referenceTypes):
+			return referenceTypes
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Load the reference with the given long name (e.g. "refs/heads/master")
+	///
+	/// If the reference is a branch, a `Branch` will be returned. If the
+	/// reference is a tag, a `TagReference` will be returned. Otherwise, a
+	/// `Reference` will be returned.
+	public func reference(named name: String) throws -> ReferenceType {
+		let result = reference(named: name) as Result
+		switch result {
+		case let .success(referenceType):
+			return referenceType
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Load and return a list of all local branches.
+	public func localBranches() throws -> [Branch] {
+		let result = localBranches() as Result
+		switch result {
+		case let .success(branches):
+			return branches
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Load and return a list of all remote branches.
+	public func remoteBranches() throws -> [Branch] {
+		let result = remoteBranches() as Result
+		switch result {
+		case let .success(branches):
+			return branches
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Load the local branch with the given name (e.g., "master").
+	public func localBranch(named name: String) throws -> Branch {
+		let result = localBranch(named: name) as Result
+		switch result {
+		case let .success(branch):
+			return branch
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Load the remote branch with the given name (e.g., "origin/master").
+	public func remoteBranch(named name: String) throws -> Branch {
+		let result = remoteBranch(named: name) as Result
+		switch result {
+		case let .success(branch):
+			return branch
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Load and return a list of all the `TagReference`s.
+	public func allTags() throws -> [TagReference] {
+		let result = allTags() as Result
+		switch result {
+		case let .success(tagReferences):
+			return tagReferences
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Load the tag with the given name (e.g., "tag-2").
+	public func tag(named name: String) throws -> TagReference {
+		let result = tag(named: name) as Result
+		switch result {
+		case let .success(tagReference):
+			return tagReference
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	// MARK: - Working Directory
+
+	/// Load the reference pointed at by HEAD.
+	///
+	/// When on a branch, this will return the current `Branch`.
+	public func HEAD() throws -> ReferenceType {
+		let result = HEAD() as Result
+		switch result {
+		case let .success(referenceType):
+			return referenceType
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Set HEAD to the given oid (detached).
+	///
+	/// :param: oid The OID to set as HEAD.
+	/// :returns: Returns a result with void or the error that occurred.
+	public func setHEAD(_ oid: OID) throws {
+		let result = setHEAD(oid) as Result
+		switch result {
+		case .success():
+			return
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Set HEAD to the given reference.
+	///
+	/// :param: reference The reference to set as HEAD.
+	/// :returns: Returns a result with void or the error that occurred.
+	public func setHEAD(_ reference: ReferenceType) throws {
+		let result = setHEAD(reference) as Result
+		switch result {
+		case .success():
+			return
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Check out HEAD.
+	///
+	/// :param: strategy The checkout strategy to use.
+	/// :param: progress A block that's called with the progress of the checkout.
+	/// :returns: Returns a result with void or the error that occurred.
+	public func checkout(strategy: CheckoutStrategy, progress: CheckoutProgressBlock? = nil) throws {
+		let result = checkout(strategy: strategy, progress: progress) as Result
+		switch result {
+		case .success():
+			return
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Check out the given OID.
+	///
+	/// :param: oid The OID of the commit to check out.
+	/// :param: strategy The checkout strategy to use.
+	/// :param: progress A block that's called with the progress of the checkout.
+	/// :returns: Returns a result with void or the error that occurred.
+	public func checkout(_ oid: OID, strategy: CheckoutStrategy,
+						 progress: CheckoutProgressBlock? = nil) throws {
+		let result = checkout(oid, strategy: strategy, progress: progress) as Result
+		switch result {
+		case .success():
+			return
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Check out the given reference.
+	///
+	/// :param: reference The reference to check out.
+	/// :param: strategy The checkout strategy to use.
+	/// :param: progress A block that's called with the progress of the checkout.
+	/// :returns: Returns a result with void or the error that occurred.
+	public func checkout(_ reference: ReferenceType, strategy: CheckoutStrategy,
+						 progress: CheckoutProgressBlock? = nil) throws {
+		let result = checkout(reference, strategy: strategy, progress: progress) as Result
+		switch result {
+		case .success():
+			return
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Get the index for the repo. The caller is responsible for freeing the index.
+	public func unsafeIndex() throws -> OpaquePointer {
+		let result = unsafeIndex() as Result
+		switch result {
+		case let .success(opaquePointer):
+			return opaquePointer
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Stage the file(s) under the specified path.
+	public func add(path: String) throws {
+		let result = add(path: path) as Result
+		switch result {
+		case .success():
+			return
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Perform a commit with arbitrary numbers of parent commits.
+	public func commit(
+		tree treeOID: OID,
+		parents: [Commit],
+		message: String,
+		signature: Signature
+	) throws -> Commit {
+		let result = commit(tree: treeOID, parents: parents, message: message, signature: signature) as Result
+		switch result {
+		case let .success(commit):
+			return commit
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	/// Perform a commit of the staged files with the specified message and signature,
+	/// assuming we are not doing a merge and using the current tip as the parent.
+	public func commit(message: String, signature: Signature) throws -> Commit {
+		let result = commit(message: message, signature: signature) as Result
+		switch result {
+		case let .success(commit):
+			return commit
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	// MARK: - Diffs
+
+	public func diff(for commit: Commit) throws -> Diff {
+		let result = diff(for: commit) as Result
+		switch result {
+		case let .success(diff):
+			return diff
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	// MARK: - Status
+
+	public func status() throws -> [StatusEntry] {
+		let result = status() as Result
+		switch result {
+		case let .success(statusEntries):
+			return statusEntries
+		case let .failure(error):
+			throw error
+		}
+	}
+
+	// MARK: - Validity/Existence Check
+
+	/// :returns: `true` iff there is a git repository at `url`, else `false` or an error.
+	public static func isValid(url: URL) throws -> Bool {
+		let result = isValid(url: url) as Result
+		switch result {
+		case let .success(value):
+			return value
+		case let .failure(error):
+			throw error
+		}
+	}
+}
+
 /// A git repository.
 public final class Repository {
 
@@ -530,7 +1023,7 @@ public final class Repository {
 				$0.hasPrefix(prefix)
 			}
 			.map {
-				self.reference(named: $0)
+				self.reference(named: $0) as Result
 			}
 		git_strarray_free(pointer)
 		pointer.deallocate()
@@ -684,7 +1177,7 @@ public final class Repository {
 	}
 
 	/// Get the index for the repo. The caller is responsible for freeing the index.
-	func unsafeIndex() -> Result<OpaquePointer, NSError> {
+	public func unsafeIndex() -> Result<OpaquePointer, NSError> {
 		var index: OpaquePointer? = nil
 		let result = git_repository_index(&index, self.pointer)
 		guard result == GIT_OK.rawValue && index != nil else {
