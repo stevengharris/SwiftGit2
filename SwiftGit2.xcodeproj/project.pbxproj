@@ -856,8 +856,12 @@
 					621E66B61C72958D00A0F352 = {
 						LastSwiftMigration = 1020;
 					};
+					AAA052D5251D3F74004A4BD8 = {
+						DevelopmentTeam = 7XXG4VJQ59;
+					};
 					BEB31F221A0D6F7A00F525B9 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 7XXG4VJQ59;
 						LastSwiftMigration = 1020;
 					};
 					BEB31F2D1A0D6F7A00F525B9 = {
@@ -1470,12 +1474,15 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				DEVELOPMENT_TEAM = 7XXG4VJQ59;
 				EXCLUDED_ARCHS = "";
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2-1.0.1/include",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = SwiftGit2/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LIBRARY_SEARCH_PATHS = (
 					"External/libgit2-1.0.1-catalyst",
 					"External/libssh2-1.9.0-catalyst/lib",
@@ -1512,12 +1519,15 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				DEVELOPMENT_TEAM = 7XXG4VJQ59;
 				EXCLUDED_ARCHS = "";
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2-1.0.1/include",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = SwiftGit2/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LIBRARY_SEARCH_PATHS = (
 					"External/libgit2-1.0.1-catalyst",
 					"External/libssh2-1.9.0-catalyst/lib",
@@ -1678,6 +1688,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB31F561A0D75EE00F525B9 /* macOS-Framework.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				DEVELOPMENT_TEAM = 7XXG4VJQ59;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2/include",
 					"$(inherited)",
@@ -1706,6 +1718,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEB31F561A0D75EE00F525B9 /* macOS-Framework.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				DEVELOPMENT_TEAM = 7XXG4VJQ59;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2/include",
 					"$(inherited)",
