@@ -780,6 +780,124 @@ public final class Repository {
 		}
 	}
 
+	/// Perform a commit of the staged files in the index that match the Diff.Files passed-in,
+	/// assuming we are not doing a merge and using the current tip as the parent.
+	public func commit(files: [Diff.File], message: String, signature: Signature) -> Result<Commit, NSError> {
+		let indexResult = unsafeIndex()
+		switch indexResult {
+		case .failure(let error):
+			return .failure(error)
+		case .success(let index):
+			defer { git_index_free(index) }
+			var error: Int32
+			var pathsToCommit = [String]()
+			var pathsToKeep = [String]()
+			// Iterate over the entries in the index that are not current, as found by status()
+			// For posterity, I used a git_index_iterator as follows, but it includes files that
+			// are filtered out by status(). So, I reverted to status. I would prefer to use the
+			// index directly and filter on the file status myself, but I spent too much time
+			// on it and should come back and revisit.
+			//
+			// TODO:- Make sure the oldfile/newfile logic isn't too hardcoded here; for example,
+			// what of renames?
+			//
+			//		var error: Int32
+			//		// Iterate over the entries in the index
+			//		var iter: OpaquePointer? = nil
+			//		defer { git_index_iterator_free(iter) }
+			//		error = git_index_iterator_new(&iter, index)
+			//		guard error == GIT_OK.rawValue else {
+			//			let err = NSError(gitError: error, pointOfFailure: "git_index_iterator_new")
+			//			return .failure(err)
+			//		}
+			//		let filePaths = files.map { $0.path }
+			//		let entry: OpaquePointer? = nil
+			//		var entryPtr = UnsafePointer<git_index_entry>(entry)
+			//		var pathsToCommit = [String]()
+			//		var pathsToKeep = [String]()
+			//		while git_index_iterator_next(&entryPtr, iter) == GIT_OK.rawValue {
+			//			if let entry = entryPtr?.pointee, let entryPath = String(validatingUTF8: entry.path) {
+			//				if filePaths.contains(entryPath) {
+			//					pathsToCommit.append(entryPath)
+			//				} else {
+			//					pathsToKeep.append(entryPath)
+			//				}
+			//			}
+			//		}
+			//
+			let statusResult = status()
+			switch statusResult {
+			case .failure(let error):
+				return .failure(error)
+			case .success(let statusEntries):
+				let filePaths = files.map { $0.path }
+				for entry in statusEntries {
+					if let file = entry.headToIndex?.newFile ?? entry.headToIndex?.oldFile {
+						let filePath = file.path
+						if filePaths.contains(filePath) {
+							pathsToCommit.append(filePath)
+						} else {
+							pathsToKeep.append(filePath)
+						}
+					}
+				}
+			}
+			// Make sure we found all the files we expected in the index before doing anything else
+			guard pathsToCommit.count == files.count else {
+				let err = NSError(gitError: 0, pointOfFailure: "commit(files:message:signature")
+				return .failure(err)
+			}
+			// Remove the entries we want to keep in the index (and don't want to commit)
+			for path in pathsToKeep {
+				error = git_index_remove_bypath(index, path)
+				guard error == GIT_OK.rawValue else {
+					let err = NSError(gitError: error, pointOfFailure: "git_index_remove_bypath")
+					return .failure(err)
+				}
+			}
+			// Populate a tree from the index that now has only files from pathsToCommit
+			var treeOID = git_oid()
+			let treeResult = git_index_write_tree(&treeOID, index)
+			guard treeResult == GIT_OK.rawValue else {
+				let err = NSError(gitError: treeResult, pointOfFailure: "git_index_write_tree")
+				return .failure(err)
+			}
+			// Commit the tree, handling the case of it being the first commit to the repo
+			var parentID = git_oid()
+			let nameToIDResult = git_reference_name_to_id(&parentID, self.pointer, "HEAD")
+			guard nameToIDResult == GIT_OK.rawValue else {
+				if git_oid_iszero(&parentID) == 1 {
+					return commit(tree: OID(treeOID), parents: [], message: message, signature: signature)
+				} else {
+					return .failure(NSError(gitError: nameToIDResult, pointOfFailure: "git_reference_name_to_id"))
+				}
+			}
+			let commitResult = commit(OID(parentID)).flatMap { parentCommit in
+				commit(tree: OID(treeOID), parents: [parentCommit], message: message, signature: signature)
+			}
+			// If we don't have anything in pathsToKeep to restore to the index, return with the commitResult
+			guard pathsToKeep.count > 0 else {
+				return commitResult
+			}
+			// Otherwise, always restore pathsToKeep regardless of the commit result, since we removed them
+			// before we got a commitResult
+			for path in pathsToKeep {
+				error = git_index_add_bypath(index, path)
+				guard error == GIT_OK.rawValue else {
+					let err = NSError(gitError: error, pointOfFailure: "git_index_add_bypath")
+					return .failure(err)
+				}
+			}
+			// Save the index that now only contains the pathsToKeep, and return the commitResult
+			error = git_index_write(index)
+			guard error == GIT_OK.rawValue else {
+				let err = NSError(gitError: error, pointOfFailure: "git_index_write")
+				return .failure(err)
+			}
+			return commitResult
+		}
+	}
+	
 	/// Perform a commit of the staged files with the specified message and signature,
 	/// assuming we are not doing a merge and using the current tip as the parent.
 	public func commit(message: String, signature: Signature) -> Result<Commit, NSError> {
