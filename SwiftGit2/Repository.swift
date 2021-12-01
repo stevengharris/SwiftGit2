@@ -781,45 +781,66 @@ public final class Repository {
 		}
 	}
 
-	/// Given files that exist in the index and show up in status, commit only those files, excluding the others that show up in status.
+	/// Given file paths that show up in status, commit only those files, excluding the others that show up in status.
 	///
 	/// This is the equivalent of git commit <files> -m "commit message".
-	/// Use status to identify all files that are staged, and then use it to identify the files to exclude as part of this commit.
-	public func commit(files: [Diff.File], message: String, signature: Signature) -> Result<Commit, NSError> {
-		let filePaths = files.map { $0.path }
-		var filesToInclude = [Diff.File]()
-		var pathsToExclude = [String]()
-		// TODO: Perhaps use an index iterator with proper filtering, since the subsequent commit is based on the index
+	///
+	/// Use status to identify all files that are staged, including deletions, to identify the files to exclude as part of this commit.
+	///
+	/// When a modified file is being excluded as part of this commit, then we need to remove it from the tree we build that is
+	/// based on the index. This is the most straightforward case - a file was added or modified, and we don't want to include
+	/// it as part of the commit. We track those files in modsToExclude.
+	///
+	/// The deletion case is a bit harder to figure out. When we identify a file to commit that has been deleted, the file no longer
+	/// exists. It shows up in status, because status examines the diffs between HEAD and the index. To commit the deletion
+	/// of a specific file, then, we need to *commit a tree that does not include that file*. However, there might be other deletions
+	/// listed in status (i.e., other files that also don't exist). To commit the deletion of a specific file while avoiding committing the
+	/// deletions of the others, we need to actually *insert the old files back in to the tree we commit*. We track those files in
+	/// delsToInclude.
+	public func commit(files: [String], message: String, signature: Signature) -> Result<Commit, NSError> {
+		var pathsToInclude: Int = 0
+		var modsToExclude = [Diff.File]()	// The (new) modified files to exclude from the commit
+		var delsToInclude = [Diff.File]()	// The (old) deleted files to add back in to the commit
 		let statusResult = status()
 		switch statusResult {
 		case .failure(let error):
 			return .failure(error)
 		case .success(let statusEntries):
 			for entry in statusEntries {
-				if let file = entry.headToIndex?.newFile ?? entry.headToIndex?.oldFile {
-					let filePath = file.path
-					if filePaths.contains(filePath) {
-						filesToInclude.append(file)
+				if let modFile = entry.headToIndex?.newFile, !isEmpty(modFile.oid) {
+					// The modFile identifies the new file after it has been modified
+					let filePath = modFile.path
+					if files.contains(filePath) {
+						pathsToInclude += 1
 					} else {
-						pathsToExclude.append(filePath)
+						modsToExclude.append(modFile)
 					}
+				} else if let delFile = entry.headToIndex?.oldFile, !isEmpty(delFile.oid){
+					// The delFile identifies the old file before it was deleted
+					let filePath = delFile.path
+					if files.contains(filePath) {
+						pathsToInclude += 1
+					} else {
+						delsToInclude.append(delFile)
+					}
+				} else {
+					print("StatusEntry is not recognized as modified or deleted: \(entry)")
 				}
 			}
-			guard filesToInclude.count == files.count else {
+			guard pathsToInclude == files.count else {
 				return .failure(NSError(gitError: 0, pointOfFailure: "Attempt to commit files that are not all staged."))
 			}
-			return commit(includingFiles: filesToInclude, excludingPaths: pathsToExclude, message: message, signature: signature)
+			return commit(excludingMods: modsToExclude, includingDels: delsToInclude, message: message, signature: signature)
 		}
 	}
 	
-	/// Commit the includingFiles, exclude the excludingPaths, using the message and signature.
+	/// Commit the index, but exclude the (new) modified files in mods, and include the (old) deleted files in dels.
 	///
-	/// In this approach, we create a treebuilder from the index. That treebuilder includes all the subtrees and blobs, so we can identify
-	/// subtrees within it. (Note: We cannot find the subtrees by looking them up bypath in the index itself, just from the treebuilder.)
-	/// Because the tree we derive from the index may have subtrees, and we may be removing entries at an arbitrary depth in it,
-	/// we have to use a recursive remove method to make it happen that creates treebuilders as it moves down a path toward the
-	/// blob at the last pathComponent.
-	public func commit(includingFiles: [Diff.File], excludingPaths: [String], message: String, signature: Signature) -> Result<Commit, NSError> {
+	/// Use a treebuilder whose source is the index.
+	///
+	/// If mods and dels are both empty, then just do a "normal" commit of the treebuilder's tree.
+	/// If not, then remove the mods and insert the dels into the treebuilder and commit the modified tree.
+	private func commit(excludingMods mods: [Diff.File], includingDels dels: [Diff.File], message: String, signature: Signature) -> Result<Commit, NSError> {
 		let indexResult = unsafeIndex()
 		switch indexResult {
 		case .failure(let error):
@@ -838,26 +859,31 @@ public final class Repository {
 				return .failure(err)
 			}
 			var indexbld: OpaquePointer? = nil
+			defer { git_treebuilder_free(indexbld) }
 			error = git_treebuilder_new(&indexbld, self.pointer, indexTree)
 			guard error == GIT_OK.rawValue else {
 				let err = NSError(gitError: error, pointOfFailure: "git_treebuilder_new")
 				return .failure(err)
 			}
-			guard !excludingPaths.isEmpty else {
+			guard !mods.isEmpty || !dels.isEmpty else {
 				// Since we are not excluding anything, just commit the tree we derived from the index
 				return commitTree(treeOID: indexTreeOID, message: message, signature: signature)
 			}
-			// Otherwise, we need to remove the excluded paths from the treebuilder.
+			// Otherwise, we need to remove/insert files from the treebuilder.
+			// For mods, we remove them. For dels, we insert them.
 			// Since the treebuilder has subtrees which we have to create treebuilders
-			// for in order to modify them, we use a recursive remove method to do it.
+			// for in order to modify them, we use recursive methods to do it.
 			do {
-				for path in excludingPaths {
-					try remove(treebuilder: indexbld, path: path)
+				for mod in mods {
+					try remove(treebuilder: indexbld, path: mod.path)
+				}
+				for del in dels {
+					try insert(treebuilder: indexbld, path: del.path, file: del)
 				}
 			} catch let error {
 				return .failure(error as NSError)
 			}
-			// Now write out the pruned treebuilder to save it as a tree
+			// Now write out the modified treebuilder to save it as a tree
 			var treeOID = git_oid()
 			error = git_treebuilder_write(&treeOID, indexbld)
 			guard error == GIT_OK.rawValue else {
@@ -871,22 +897,80 @@ public final class Repository {
 				let err = NSError(gitError: error, pointOfFailure: "git_tree_lookup")
 				return .failure(err)
 			}
-			// Commit the pruned tree, handling the case of it being the first commit to the repo
+			// Commit the modified tree, handling the case of it being the first commit to the repo
 			return commitTree(treeOID: treeOID, message: message, signature: signature)
 		}
 	}
 	
-	/// Remove the path that exists somewhere in the depths of treebuilder by creating new subtree treebuilders as needed.
-	public func remove(treebuilder bld: OpaquePointer?, path: String) throws {
+	/// Insert the file into the treebuilder at the path, calling recursively until path is a single filename.
+	///
+	/// In recursive calls, file remains the same, identifying the blob to be inserted, and treebuilder is for
+	/// the subtrees as we march down the path toward that blob.
+	private func insert(treebuilder bld: OpaquePointer?, path: String, file: Diff.File) throws {
 		guard let url = URL(string: path) else {
 			throw NSError(gitError: 0, pointOfFailure: "Invalid path \(path)")
 		}
 		var error: Int32
 		let components = url.pathComponents
 		let entryName = components[0]
-		// We got to the file at the end of the path. Insert it into the treebuilder,
-		// write the tree, and return with the treeOID of the tree we wrote.
-		// The caller needs to free the treebuilder.
+		if components.count == 1 {
+			// Note: Caller needs to do the write of treebuilder to get the treeOID and
+			// look up the tree.
+			var fileOID = file.oid.oid
+			error = git_treebuilder_insert(nil, bld, entryName, &fileOID, GIT_FILEMODE_BLOB)
+			guard error == GIT_OK.rawValue else {
+				let err = NSError(gitError: error, pointOfFailure: "git_treebuilder_remove")
+				throw err
+			}
+			return
+		}
+		// Path contains a file in a path, so we need to march down the path toward the file,
+		// either using an existing tree we find in the repo, or creating a new one until
+		// we can insert the file into a treebuilder and then write it out.
+		let subPath = components.suffix(from: 1).joined()
+		// Create a pointer to a treebuilder for the subtree, which will either be for
+		// an existing subtree entry or for a new one.
+		var subbld: OpaquePointer? = nil
+		defer { git_treebuilder_free(subbld) }
+		var subtreeOID = git_oid()
+		// Get the pointer to the subtree for entryName.
+		// If it doesn't exist, then we need to create it.
+		// In either case, create a new subtree treebuilder so we can insert into it.
+		if let subtreePtr = getTreePointer(in: bld, path: entryName) {
+			// We found the subtree in the treebuilder
+			error = git_treebuilder_new(&subbld, self.pointer, subtreePtr)
+			guard error == GIT_OK.rawValue else {
+				throw NSError(gitError: error, pointOfFailure: "git_treebuilder_new")
+			}
+		} else {
+			// The subtree doesn't exist, so we need to create a new subtree treebuilder
+			error = git_treebuilder_new(&subbld, self.pointer, nil)
+			guard error == GIT_OK.rawValue else {
+			    throw NSError(gitError: error, pointOfFailure: "git_treebuilder_new")
+			}
+		}
+		// Recursively call this same method for the remaining path, using the subtree treebuilder
+		try insert(treebuilder: subbld, path: subPath, file: file)
+		// When done, write the subtree treebuilder to get the oid of the subtree that now has the insertion(s).
+		error = git_treebuilder_write(&subtreeOID, subbld)
+		guard error == GIT_OK.rawValue else {
+			throw NSError(gitError: error, pointOfFailure: "git_treebuilder_write")
+		}
+		// Insert the modified subtree into the parent
+		error = git_treebuilder_insert(nil, bld, entryName, &subtreeOID, GIT_FILEMODE_TREE)
+		guard error == GIT_OK.rawValue else {
+			throw NSError(gitError: error, pointOfFailure: "git_treebuilder_insert")
+		}
+	}
+	
+	/// Remove the path that must exist somewhere in the depths of treebuilder by creating new subtree treebuilders as needed.
+	private func remove(treebuilder bld: OpaquePointer?, path: String) throws {
+		guard let url = URL(string: path) else {
+			throw NSError(gitError: 0, pointOfFailure: "Invalid path \(path)")
+		}
+		var error: Int32
+		let components = url.pathComponents
+		let entryName = components[0]
 		if components.count == 1 {
 			// Note: Caller needs to do the write of treebuilder to get the treeOID and
 			// look up the tree.
@@ -895,23 +979,21 @@ public final class Repository {
 				let err = NSError(gitError: error, pointOfFailure: "git_treebuilder_remove")
 				throw err
 			}
-			//print(" Removed \(path)")
 			return
 		}
 		// Path contains a file in a path, so we need to march down the path toward the file,
 		// either using an existing tree we find in the repo, or creating a new one until
 		// we can insert the file into a treebuilder and then write it out.
-		// Consider subdir/filename.ext.
 		let subPath = components.suffix(from: 1).joined()
 		// Create a pointer to a treebuilder for the subtree, which will either be for
 		// an existing subtree entry or for a new one.
 		var subbld: OpaquePointer? = nil
 		defer { git_treebuilder_free(subbld) }
 		var subtreeOID = git_oid()
-		// The subtree entryName must exist in the treebuilder already or it's an error
-		if let entry = getEntryPointerInTreebuilder(bld: bld, path: entryName) {
-			//print(" Found subtree \(entryName)")
-			error = git_treebuilder_new(&subbld, self.pointer, entry)
+		// Get the pointer to the subtree for entryName.
+		// It has to exist either in bld or we can't remove it.
+		if let subtreePtr = getTreePointer(in: bld, path: entryName) {
+			error = git_treebuilder_new(&subbld, self.pointer, subtreePtr)
 			guard error == GIT_OK.rawValue else {
 				throw NSError(gitError: error, pointOfFailure: "git_treebuilder_new")
 			}
@@ -927,23 +1009,25 @@ public final class Repository {
 				throw NSError(gitError: error, pointOfFailure: "git_treebuilder_insert")
 			}
 		} else {
-			throw NSError(gitError: 0, pointOfFailure: "Missing entry for \(entryName)")
+			throw NSError(gitError: 0, pointOfFailure: "Could not remove from subtree")
 		}
 	}
 	
-	public func getEntryPointerInTreebuilder(bld: OpaquePointer?, path: String) -> OpaquePointer? {
+	/// Return a pointer to the Tree at path in the treebuilder bld
+	private func getTreePointer(in bld: OpaquePointer?, path: String) -> OpaquePointer? {
 		guard let url = URL(string: path) else { return nil }
 		let pathComponents = url.pathComponents
-		guard let entry = git_treebuilder_get(bld, pathComponents[0]) else { return nil }
-		let treeEntry = Tree.Entry(entry)
+		guard let treeEntryPtr = git_treebuilder_get(bld, pathComponents[0]) else { return nil }
+		let treeEntry = Tree.Entry(treeEntryPtr)
 		if treeEntry.object.type == GIT_OBJECT_TREE {
 			return treePointerFromTreeEntry(entry: treeEntry)
 		} else {
-			return entry
+			return nil
 		}
 	}
 	
-	public func treePointerFromTreeEntry(entry: Tree.Entry) -> OpaquePointer? {
+	/// GIven a Tree.Entry that is a tree (as opposed to blob), return a pointer to the Tree
+	private func treePointerFromTreeEntry(entry: Tree.Entry) -> OpaquePointer? {
 		var tree: OpaquePointer? = nil
 		var entryOID = entry.object.oid.oid
 		let error = git_tree_lookup(&tree, self.pointer, &entryOID)
@@ -955,8 +1039,16 @@ public final class Repository {
 		return tree
 	}
 	
-	public func commitTree(treeOID: git_oid, message: String, signature: Signature) -> Result<Commit, NSError> {
-		// Commit the pruned tree, handling the case of it being the first commit to the repo
+	/// Return true if oid is empty
+	///
+	/// Should be implemented as oid.isEmpty in OID.
+	private func isEmpty(_ oid: OID) -> Bool {
+		return oid.description == "0000000000000000000000000000000000000000"
+	}
+	
+	/// Commit the tree, handling the case of it being the first commit to the repo with the specified message and signature,
+	/// assuming we are not doing a merge and using the current tip as the parent.
+	private func commitTree(treeOID: git_oid, message: String, signature: Signature) -> Result<Commit, NSError> {
 		var parentID = git_oid()
 		let nameToIDResult = git_reference_name_to_id(&parentID, self.pointer, "HEAD")
 		guard nameToIDResult == GIT_OK.rawValue else {
