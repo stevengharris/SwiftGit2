@@ -781,6 +781,7 @@ public final class Repository {
 		}
 	}
 
+	/*
 	/// Given file paths that show up in status, commit only those files, excluding the others that show up in status.
 	///
 	/// This is the equivalent of git commit <files> -m "commit message".
@@ -1062,6 +1063,7 @@ public final class Repository {
 			commit(tree: OID(treeOID), parents: [parentCommit], message: message, signature: signature)
 		}
 	}
+	*/
 
 	/// Perform a commit of the staged files with the specified message and signature,
 	/// assuming we are not doing a merge and using the current tip as the parent.
