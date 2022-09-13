@@ -36,7 +36,9 @@ function build()
     # but not for Mac Catalyst
 
     pushd "${ROOT_PATH}/External/OpenSSL-for-iPhone" > /dev/null
-    ./build-libssl.sh --targets="mac-catalyst-x86_64" --macosx-sdk="10.15" --cleanup
+    # was: ./build-libssl.sh --targets="mac-catalyst-x86_64" --macosx-sdk="10.15" --cleanup
+    # ./build-libssl.sh --targets="mac-catalyst-x86_64" --macosx-sdk="12.3" --ios-sdk="15.5" --cleanup
+    ./build-libssl.sh --targets="mac-catalyst-x86_64" --macosx-sdk="12.3" --ios-sdk="15.5" --cleanup
     popd > /dev/null
 }
 

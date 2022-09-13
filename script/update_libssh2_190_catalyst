@@ -29,7 +29,7 @@ function build_ssh2 ()
     # cp -R "${ROOT_PATH}/External/libssh2-1.9.0" "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/src/"
     pushd "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/src/libssh2-1.9.0" > /dev/null
 
-    export CFLAGS="-arch ${ARCH} -fembed-bitcode -pipe -no-cpp-precomp -isysroot ${SDKROOT} -miphoneos-version-min=${IPHONEOS_DEPLOYMENT_TARGET} --target=arm64-apple-ios13.0-macabi"
+    export CFLAGS="-arch ${ARCH} -fembed-bitcode -pipe -no-cpp-precomp -isysroot ${SDKROOT} -miphoneos-version-min=${IPHONEOS_DEPLOYMENT_TARGET} --target=arm64-apple-ios13.1-macabi"
     export CPPFLAGS="-arch ${ARCH} -fembed-bitcode -pipe -no-cpp-precomp -isysroot ${SDKROOT} -miphoneos-version-min=${IPHONEOS_DEPLOYMENT_TARGET}"
 
     mkdir -p "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/bin/${SDKNAME}-${ARCH}.sdk"

@@ -17,6 +17,18 @@ libraries=(
     External/ios-openssl/lib/libssl.a
     External/ios-openssl/lib/libcrypto.a
     External/ios-openssl/include
+    
+# The following were created/added by SGH to update the underlying versions 
+# and to add Catalyst support
+    External/libgit2-1.0.1-catalyst/libgit2-1.0.1-catalyst.a
+    External/libssh2-1.9.0-ios/lib/libssh2-1.9.0-ios.a
+    External/libssh2-1.9.0-catalyst/lib/libssh2-1.9.0-catalyst.a
+    External/openssl-1.1.1-ios/lib/libssl.a
+    External/openssl-1.1.1-ios/lib/libcrypto.a
+    External/openssl-1.1.1-ios/include
+    External/openssl-1.1.1-catalyst/lib/libssl.a
+    External/openssl-1.1.1-catalyst/lib/libcrypto.a
+    External/openssl-1.1.1-catalyst/include
 )
 
 rm -vrf "${libraries[@]}"

@@ -8,7 +8,6 @@
 
 import Foundation
 import Clibgit2
-import AppKit
 
 public typealias CheckoutProgressBlock = (String?, Int, Int) -> Void
 

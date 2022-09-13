@@ -741,9 +741,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AAA052EB251D3F74004A4BD8 /* Build configuration list for PBXNativeTarget "SwiftGit2_101-Catalyst" */;
 			buildPhases = (
+				AAA052E9251D3F74004A4BD8 /* Headers */,
 				AAA052D8251D3F74004A4BD8 /* Sources */,
 				AAA052E6251D3F74004A4BD8 /* Frameworks */,
-				AAA052E9251D3F74004A4BD8 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -759,9 +759,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AAABA22E250191F600DE7979 /* Build configuration list for PBXNativeTarget "SwiftGit2_101-iOS" */;
 			buildPhases = (
+				AAABA22C250191F600DE7979 /* Headers */,
 				AAABA21B250191F600DE7979 /* Sources */,
 				AAABA229250191F600DE7979 /* Frameworks */,
-				AAABA22C250191F600DE7979 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -899,12 +899,12 @@
 				621E66ED1C729EBB00A0F352 /* libssh2-iOS */,
 				621E66E71C729EB800A0F352 /* OpenSSL-iOS */,
 				AAABA218250191F600DE7979 /* SwiftGit2_101-iOS */,
-				AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */,
-				AA7F2DC324FED49E008447AD /* libssh2_190-iOS */,
-				AA7F2DBD24FDC189008447AD /* OpenSSL_111-iOS */,
 				AAA052D5251D3F74004A4BD8 /* SwiftGit2_101-Catalyst */,
+				AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */,
 				AAA05229251D39E2004A4BD8 /* libgit2_101-Catalyst */,
+				AA7F2DC324FED49E008447AD /* libssh2_190-iOS */,
 				AAA05279251D3C83004A4BD8 /* libssh2_190-Catalyst */,
+				AA7F2DBD24FDC189008447AD /* OpenSSL_111-iOS */,
 				AAA05264251D3C53004A4BD8 /* OpenSSL_111-Catalyst */,
 				C9CE0DD21E0710BD0053205D /* SwiftLint */,
 			);

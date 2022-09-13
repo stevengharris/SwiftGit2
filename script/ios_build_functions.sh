@@ -81,6 +81,7 @@ function build_all_archs ()
 
         SDKNAME="${PLATFORM}${SDKVERSION}"
         SDKROOT="$(ios_sdk_path ${SDKNAME})"
+        echo "SDKROOT=${SDKROOT}"
         
         echo "Building ${LIBRARY_NAME} for ${SDKNAME} ${ARCH}"
         echo "Please stand by..."
@@ -107,8 +108,9 @@ function build_catalyst ()
     echo "Building for Mac Catalyst"
     ARCH=x86_64
     PLATFORM=MacOSX
-    SDKVERSION=10.15
+    SDKVERSION=12.3
     SDKNAME="${PLATFORM}${SDKVERSION}"
+    echo "SDKNAME=${SDKNAME}"
     SDKROOT="$(ios_sdk_path ${SDKNAME})"
     echo "SDKROOT=${SDKROOT}"
         
