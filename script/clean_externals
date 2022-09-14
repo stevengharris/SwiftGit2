@@ -20,6 +20,7 @@ libraries=(
     
 # The following were created/added by SGH to update the underlying versions 
 # and to add Catalyst support
+    External/libgit2-1.0.1-ios/libgit2-1.0.1-ios.a
     External/libgit2-1.0.1-catalyst/libgit2-1.0.1-catalyst.a
     External/libssh2-1.9.0-ios/lib/libssh2-1.9.0-ios.a
     External/libssh2-1.9.0-catalyst/lib/libssh2-1.9.0-catalyst.a
