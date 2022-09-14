@@ -225,7 +225,7 @@
 		AAA05269251D3C53004A4BD8 /* libOpenSSL_111-Catalyst.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libOpenSSL_111-Catalyst.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA05280251D3C83004A4BD8 /* liblibssh2_190-Catalyst.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibssh2_190-Catalyst.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA052EE251D3F74004A4BD8 /* SwiftGit2_Catalyst.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftGit2_Catalyst.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAABA231250191F600DE7979 /* SwiftGit2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftGit2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAABA231250191F600DE7979 /* SwiftGit2_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftGit2_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAFE9E16250061E400C82C25 /* libgit2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libgit2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE0991F61A578FB1007D4E6A /* Mantle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Mantle.zip; sourceTree = "<group>"; };
 		BE0B1C5C1A9978890004726D /* detached-head.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "detached-head.zip"; sourceTree = "<group>"; };
@@ -397,7 +397,7 @@
 				AA7F2DC224FDC189008447AD /* libOpenSSL_111-iOS.a */,
 				AA7F2DCA24FED49E008447AD /* liblibssh2_190-iOS.a */,
 				AAFE9E16250061E400C82C25 /* libgit2.a */,
-				AAABA231250191F600DE7979 /* SwiftGit2.framework */,
+				AAABA231250191F600DE7979 /* SwiftGit2_iOS.framework */,
 				AAA05230251D39E2004A4BD8 /* liblibgit2_101-Catalyst.a */,
 				AAA05269251D3C53004A4BD8 /* libOpenSSL_111-Catalyst.a */,
 				AAA05280251D3C83004A4BD8 /* liblibssh2_190-Catalyst.a */,
@@ -770,7 +770,7 @@
 			);
 			name = "SwiftGit2_101-iOS";
 			productName = "SwiftGit2-OSX";
-			productReference = AAABA231250191F600DE7979 /* SwiftGit2.framework */;
+			productReference = AAABA231250191F600DE7979 /* SwiftGit2_iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		AAFE9E0F250061E400C82C25 /* libgit2_101-iOS */ = {
@@ -984,6 +984,8 @@
 			inputPaths = (
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/libcrypto.a",
+				"$(DERIVED_FILE_DIR)/libssl.a",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -997,6 +999,7 @@
 			inputPaths = (
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/libssh2-1.9.0-ios.a",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1055,6 +1058,7 @@
 			inputPaths = (
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/libgit2-1.0.1-ios.a",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1532,7 +1536,6 @@
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
-				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
 					"-Wno-gcc-compat",
@@ -1578,7 +1581,6 @@
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
-				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
 					"-Wno-gcc-compat",
@@ -1615,10 +1617,9 @@
 				);
 				OTHER_SWIFT_FLAGS = "-D DEBUG -D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
-				PRODUCT_NAME = SwiftGit2;
+				PRODUCT_NAME = SwiftGit2_iOS;
 				SKIP_INSTALL = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
-				VALID_ARCHS = "arm64 x86_64";
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
 					"-Wno-gcc-compat",
@@ -1655,10 +1656,9 @@
 				);
 				OTHER_SWIFT_FLAGS = "-D LIBGIT2V1";
 				PRODUCT_BUNDLE_IDENTIFIER = org.libgit2.SwiftGit2;
-				PRODUCT_NAME = SwiftGit2;
+				PRODUCT_NAME = SwiftGit2_iOS;
 				SKIP_INSTALL = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/libgit2-1.0.1";
-				VALID_ARCHS = "arm64 x86_64";
 				WARNING_CFLAGS = (
 					"-Wno-error=unknown-warning-option",
 					"-Wno-gcc-compat",
@@ -1698,7 +1698,7 @@
 				INSTALL_GROUP = "";
 				INSTALL_MODE_FLAG = "";
 				INSTALL_OWNER = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				SWIFT_VERSION = 5.0;
 			};
@@ -1714,7 +1714,7 @@
 				INSTALL_GROUP = "";
 				INSTALL_MODE_FLAG = "";
 				INSTALL_OWNER = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				SWIFT_VERSION = 5.0;
 			};

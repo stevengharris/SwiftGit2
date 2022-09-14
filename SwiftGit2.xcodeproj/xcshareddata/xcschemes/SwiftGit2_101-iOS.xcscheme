@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AAABA218250191F600DE7979"
-               BuildableName = "SwiftGit2.framework"
+               BuildableName = "SwiftGit2_iOS.framework"
                BlueprintName = "SwiftGit2_101-iOS"
                ReferencedContainer = "container:SwiftGit2.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AAABA218250191F600DE7979"
-            BuildableName = "SwiftGit2.framework"
+            BuildableName = "SwiftGit2_iOS.framework"
             BlueprintName = "SwiftGit2_101-iOS"
             ReferencedContainer = "container:SwiftGit2.xcodeproj">
          </BuildableReference>
