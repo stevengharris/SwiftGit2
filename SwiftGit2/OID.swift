@@ -48,10 +48,14 @@ extension OID: CustomStringConvertible {
 	public var description: String {
 		let length = Int(GIT_OID_RAWSZ) * 2
 		let string = UnsafeMutablePointer<Int8>.allocate(capacity: length)
+		defer { free(string) }
 		var oid = self.oid
 		git_oid_fmt(string, &oid)
-
-		return String(bytesNoCopy: string, length: length, encoding: .ascii, freeWhenDone: true)!
+		guard let decodedString = String.init(cString: string, encoding: .ascii) else {
+			assertionFailure("Unable to decode oid")
+			return ""
+		}
+		return decodedString
 	}
 }
 
