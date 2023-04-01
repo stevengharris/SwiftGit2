@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -846,8 +846,9 @@
 		BEB31F1A1A0D6F7A00F525B9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "GitHub, Inc";
 				TargetAttributes = {
 					621E66611C72958800A0F352 = {
@@ -1275,6 +1276,7 @@
 			baseConfigurationReference = BEB31F501A0D75EE00F525B9 /* iOS-Framework.xcconfig */;
 			buildSettings = {
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_MODULE_VERIFIER = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2/include",
 					"$(inherited)",
@@ -1286,6 +1288,8 @@
 					"External/ios-openssl/lib",
 					"$(inherited)",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = (
 					"-force_load",
 					"External/libgit2-ios/libgit2-ios.a",
@@ -1306,6 +1310,7 @@
 			baseConfigurationReference = BEB31F501A0D75EE00F525B9 /* iOS-Framework.xcconfig */;
 			buildSettings = {
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_MODULE_VERIFIER = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2/include",
 					"$(inherited)",
@@ -1317,6 +1322,8 @@
 					"External/ios-openssl/lib",
 					"$(inherited)",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = (
 					"-force_load",
 					"External/libgit2-ios/libgit2-ios.a",
@@ -1508,6 +1515,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 7XXG4VJQ59;
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2-1.0.1/include",
@@ -1521,6 +1529,8 @@
 					"External/openssl-1.1.1-catalyst/lib",
 					"$(inherited)",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-force_load",
@@ -1554,6 +1564,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 7XXG4VJQ59;
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2-1.0.1/include",
@@ -1567,6 +1578,8 @@
 					"External/openssl-1.1.1-catalyst/lib",
 					"$(inherited)",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = (
 					"-force_load",
 					"External/libgit2-1.0.1-catalyst/libgit2-1.0.1-catalyst.a",
@@ -1595,6 +1608,7 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_MODULE_VERIFIER = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2-1.0.1/include",
 					"$(inherited)",
@@ -1606,6 +1620,8 @@
 					"External/openssl-1.1.1-ios/lib",
 					"$(inherited)",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-force_load",
@@ -1634,6 +1650,7 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				DEAD_CODE_STRIPPING = YES;
+				ENABLE_MODULE_VERIFIER = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2-1.0.1/include",
 					"$(inherited)",
@@ -1645,6 +1662,8 @@
 					"External/openssl-1.1.1-ios/lib",
 					"$(inherited)",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-force_load",
@@ -1698,7 +1717,7 @@
 				INSTALL_GROUP = "";
 				INSTALL_MODE_FLAG = "";
 				INSTALL_OWNER = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				SWIFT_VERSION = 5.0;
 			};
@@ -1714,7 +1733,7 @@
 				INSTALL_GROUP = "";
 				INSTALL_MODE_FLAG = "";
 				INSTALL_OWNER = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				SWIFT_VERSION = 5.0;
 			};
@@ -1727,6 +1746,7 @@
 				CODE_SIGN_IDENTITY = "";
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 7XXG4VJQ59;
+				ENABLE_MODULE_VERIFIER = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2/include",
 					"$(inherited)",
@@ -1736,6 +1756,8 @@
 					External,
 					"$(inherited)",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = (
 					"-lgit2",
 					"-force_load",
@@ -1758,6 +1780,7 @@
 				CODE_SIGN_IDENTITY = "";
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 7XXG4VJQ59;
+				ENABLE_MODULE_VERIFIER = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/External/libgit2/include",
 					"$(inherited)",
@@ -1767,6 +1790,8 @@
 					External,
 					"$(inherited)",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = (
 					"-lgit2",
 					"-force_load",
@@ -1788,7 +1813,7 @@
 			buildSettings = {
 				DEAD_CODE_STRIPPING = YES;
 				INFOPLIST_FILE = SwiftGit2Tests/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libgit2.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1800,7 +1825,7 @@
 			buildSettings = {
 				DEAD_CODE_STRIPPING = YES;
 				INFOPLIST_FILE = SwiftGit2Tests/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libgit2.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
