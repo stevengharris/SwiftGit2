@@ -47,14 +47,16 @@ public struct OID {
 extension OID: CustomStringConvertible {
 	public var description: String {
 		let length = Int(GIT_OID_RAWSZ) * 2
-		let string = UnsafeMutablePointer<Int8>.allocate(capacity: length)
-		defer { free(string) }
+		let string = UnsafeMutablePointer<Int8>.allocate(capacity: length + 1)
 		var oid = self.oid
 		git_oid_fmt(string, &oid)
+		string[length] = 0	// Null terminate the C string
 		guard let decodedString = String.init(cString: string, encoding: .ascii) else {
 			assertionFailure("Unable to decode oid")
+			string.deallocate()
 			return ""
 		}
+		string.deallocate()
 		return decodedString
 	}
 }
