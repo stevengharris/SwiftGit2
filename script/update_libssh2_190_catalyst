@@ -8,13 +8,17 @@ set -e
 # source the common build functions
 SCRIPT_DIR=$(dirname "$0")
 source "${SCRIPT_DIR}/ios_build_functions.sh"
+CLEAN="$1"
 
 function setup ()
 {
-    if [ -f "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/lib/libssh2-1.9.0-catalyst.a" ]
+    if [ "${CLEAN}" != "clean" ]
     then
-        echo "No update needed."
-        exit 0
+        if [ -f "${ROOT_PATH}/External/libssh2-1.9.0-catalyst/lib/libssh2-1.9.0-catalyst.a" ]
+        then
+            echo "No update needed."
+            exit 0
+        fi
     fi
     LIBRARY_NAME="libssh2"
 }
