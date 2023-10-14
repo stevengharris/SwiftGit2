@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -744,6 +744,7 @@
 				AAA052E9251D3F74004A4BD8 /* Headers */,
 				AAA052D8251D3F74004A4BD8 /* Sources */,
 				AAA052E6251D3F74004A4BD8 /* Frameworks */,
+				AA3748EC2ADB097A00551B4E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -977,6 +978,23 @@
 			shellPath = /bin/sh;
 			shellScript = "script/update_libssh2_ios\n";
 		};
+		AA3748EC2ADB097A00551B4E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
 		AA7F2DBE24FDC189008447AD /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1016,7 +1034,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/libgit2-1.0.1-catalyst.a",
+				"External/libgit2-1.0.1-catalyst/libgit2-1.0.1-catalyst.a",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1059,7 +1077,7 @@
 			inputPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/libgit2-1.0.1-ios.a",
+				"External/libgit2-1.0.1-ios/libgit2-1.0.1-ios.a",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
