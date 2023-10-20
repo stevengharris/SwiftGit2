@@ -144,36 +144,63 @@ public struct Tree: ObjectType, Hashable {
 
 		/// The file name of the entry.
 		public let name: String
+		
+		/// The Entry children of the entry if it is a tree itself
+		public let children: [Entry]?
 
 		/// Create an instance with a libgit2 `git_tree_entry`.
-		public init(_ pointer: OpaquePointer) {
+		///
+		/// When this entry is a Tree, populate children by looking them up in repo
+		public init(_ pointer: OpaquePointer, repo: OpaquePointer) {
 			let oid = OID(git_tree_entry_id(pointer).pointee)
+			let type = git_tree_entry_type(pointer)
 			attributes = Int32(git_tree_entry_filemode(pointer).rawValue)
-			object = Pointer(oid: oid, type: git_tree_entry_type(pointer))!
+			object = Pointer(oid: oid, type: type)!
 			name = String(validatingUTF8: git_tree_entry_name(pointer))!
+			#if LIBGIT2V1
+			let isTree = type == GIT_OBJECT_TREE
+			#else
+			let isTree = type == GIT_OBJ_TREE
+			#endif
+			if isTree {
+				var tree: OpaquePointer? = nil
+				var treeOID = oid.oid
+				let lookupResult = git_tree_lookup(&tree, repo, &treeOID)
+					if lookupResult == GIT_OK.rawValue {
+						children = Tree(tree!).children
+				} else {
+					children = nil
+				}
+			} else {
+				children = nil
+			}
 		}
 
 		/// Create an instance with the individual values.
-		public init(attributes: Int32, object: Pointer, name: String) {
+		public init(attributes: Int32, object: Pointer, name: String, children: [Entry]? = nil) {
 			self.attributes = attributes
 			self.object = object
 			self.name = name
+			self.children = children
 		}
 	}
 
 	/// The OID of the tree.
 	public let oid: OID
 
-	/// The entries in the tree.
+	/// The entries in the tree keyed by name.
 	public let entries: [String: Entry]
+	
+	/// The entries in the tree.
+	public var children: [Entry] { Array(entries.values).sorted(by: { $0.name < $1.name }) }
 
 	/// Create an instance with a libgit2 `git_tree`.
 	public init(_ pointer: OpaquePointer) {
 		oid = OID(git_object_id(pointer).pointee)
-
+		let repo = git_tree_owner(pointer)!
 		var entries: [String: Entry] = [:]
 		for idx in 0..<git_tree_entrycount(pointer) {
-			let entry = Entry(git_tree_entry_byindex(pointer, idx)!)
+			let entry = Entry(git_tree_entry_byindex(pointer, idx)!, repo: repo)
 			entries[entry.name] = entry
 		}
 		self.entries = entries
