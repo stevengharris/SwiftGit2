@@ -147,6 +147,8 @@ public struct Tree: ObjectType, Hashable {
 		
 		/// The Entry children of the entry if it is a tree itself
 		public let children: [Entry]?
+		
+		public var hasChildren: Bool { children != nil }
 
 		/// Create an instance with a libgit2 `git_tree_entry`.
 		///
