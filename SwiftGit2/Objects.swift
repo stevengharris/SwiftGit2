@@ -152,7 +152,13 @@ public struct Tree: ObjectType, Hashable {
 
 		/// Create an instance with a libgit2 `git_tree_entry`.
 		///
-		/// When this entry is a Tree, populate children by looking them up in repo
+		/// When this entry is a Tree, populate children by looking them up in repo.
+		/// I don't see any way to determine the owner/repo for this entry from the
+		/// entry itself. To find the tree requires `git_tree_lookup` which itself
+		/// requires the repo. If you have the tree, you can find its owner/repo using
+		/// `git_tree_owner`, but there is no corresponding `git_tree_entry_owner`,
+		/// so we are reduced to determining and caching children at init time.
+		//TODO: Fix Entry to be able to compute children rather than cache them.
 		public init(_ pointer: OpaquePointer, repo: OpaquePointer) {
 			let oid = OID(git_tree_entry_id(pointer).pointee)
 			let type = git_tree_entry_type(pointer)
