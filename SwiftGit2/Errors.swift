@@ -39,8 +39,8 @@ internal extension NSError {
 ///           corresponding string representation of that error. Otherwise, it returns
 ///           nil.
 private func errorMessage(_ errorCode: Int32) -> String? {
-	let last = giterr_last()
 	#if LIBGIT2V1
+	let last = git_error_last()
 	if let lastErrorPointer = last {
 		return String(validatingUTF8: lastErrorPointer.pointee.message)
 	} else if UInt32(errorCode) == GIT_ERROR_OS.rawValue {
@@ -49,6 +49,7 @@ private func errorMessage(_ errorCode: Int32) -> String? {
 		return nil
 	}
 	#else
+	let last = giterr_last()
 	if let lastErrorPointer = last {
 		return String(validatingUTF8: lastErrorPointer.pointee.message)
 	} else if UInt32(errorCode) == GITERR_OS.rawValue {

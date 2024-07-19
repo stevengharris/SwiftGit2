@@ -29,8 +29,26 @@ function ios_sdk_version ()
     /usr/bin/xcodebuild -version -sdk 2> /dev/null | grep -A 1 '^iPhone' | tail -n 1 |  awk '{ print $2 }' 
 }
 
+# Returns the latest osx SDK version available via xcodebuild.
+function osx_sdk_version ()
+{
+    # The grep command produces output like the following, singling out the
+    # SDKVersion of just the iPhone* SDKs:
+    #
+    #   MacOSX14.5.sdk - macOS 14.5 (macosx14.5)
+    #   SDKVersion: 14.5
+
+    /usr/bin/xcodebuild -version -sdk 2> /dev/null | grep -A 1 '^MacOSX' | tail -n 1 |  awk '{ print $2 }' 
+}
+
 # Returns the path to the specified iOS SDK name
 function ios_sdk_path ()
+{
+    /usr/bin/xcodebuild -version -sdk 2> /dev/null | grep -i $1 | grep 'Path:' | awk '{ print $2 }'
+}
+
+# Returns the path to the specified osx SDK name
+function osx_sdk_path ()
 {
     /usr/bin/xcodebuild -version -sdk 2> /dev/null | grep -i $1 | grep 'Path:' | awk '{ print $2 }'
 }
