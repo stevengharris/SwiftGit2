@@ -146,15 +146,16 @@ public struct Tree: ObjectType, Hashable {
         /// requires the repo. If you have the tree, you can find its owner/repo using
         /// `git_tree_owner`, but there is no corresponding `git_tree_entry_owner`,
         /// so we are reduced to determining and caching children at init time.
-        //TODO: Fix Entry to be able to compute children rather than cache them./// Create an instance with a libgit2 `git_tree_entry`.
-		public init(_ pointer: OpaquePointer, repo: OpaquePointer) {
+        /// Create an instance with a libgit2 `git_tree_entry`.
+        // TODO: Fix Entry to be able to compute children rather than cache them.
+		public init(_ pointer: OpaquePointer, repo: OpaquePointer? = nil) {
 			let oid = OID(git_tree_entry_id(pointer).pointee)
             let type = git_tree_entry_type(pointer)
 			attributes = Int32(git_tree_entry_filemode(pointer).rawValue)
 			object = Pointer(oid: oid, type: type)!
 			name = String(validatingUTF8: git_tree_entry_name(pointer))!
             let isTree = type == GIT_OBJECT_TREE
-            if isTree {
+            if let repo, isTree {
                 var tree: OpaquePointer? = nil
                 var treeOID = oid.oid
                 let lookupResult = git_tree_lookup(&tree, repo, &treeOID)
