@@ -904,15 +904,16 @@ public final class Repository {
 	public func status(options: StatusOptions = [.includeUntracked]) -> Result<[StatusEntry], NSError> {
 		var returnArray = [StatusEntry]()
 
-		// Do this because GIT_STATUS_OPTIONS_INIT is unavailable in swift
-		let pointer = UnsafeMutablePointer<git_status_options>.allocate(capacity: 1)
-		let optionsResult = git_status_init_options(pointer, UInt32(GIT_STATUS_OPTIONS_VERSION))
-		guard optionsResult == GIT_OK.rawValue else {
-			return .failure(NSError(gitError: optionsResult, pointOfFailure: "git_status_init_options"))
-		}
-		var listOptions = pointer.move()
+        // Do this because GIT_STATUS_OPTIONS_INIT is unavailable in swift
+        // I was using "let pointer =" below, but I think it was then re-using that deallocated
+        // pointer variable when retrieving the statusResult, not the repo.pointer, which would
+        // crash. Leaving this comment in as a way of trying to determine if the fix - to
+        // use a different variable name - helps.
+		let optionsPointer = UnsafeMutablePointer<git_status_options>.allocate(capacity: 1)
+		git_status_options_init(optionsPointer, UInt32(GIT_STATUS_OPTIONS_VERSION))
+		var listOptions = optionsPointer.move()
 		listOptions.flags = options.rawValue
-		pointer.deallocate()
+        optionsPointer.deallocate()
 
 		var unsafeStatus: OpaquePointer? = nil
 		defer { git_status_list_free(unsafeStatus) }
